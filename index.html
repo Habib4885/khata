@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="ur">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team Khata Control Room - Secured Edition</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 font-sans min-h-screen">
+
+    <!-- LOGIN SCREEN CONTAINER -->
+    <div id="loginScreen" class="flex items-center justify-center min-h-screen bg-gray-200">
+        <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
+            <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">👤 Team Control Room Login</h2>
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600">Email Address</label>
+                    <input type="email" id="loginEmail" required class="w-full p-2.5 border rounded mt-1 focus:outline-blue-500" placeholder="operator@team.com">
+                </div>
+                <div>
+                    <label class="block text-sm font-semibold text-gray-600">Password</label>
+                    <input type="password" id="loginPassword" required class="w-full p-2.5 border rounded mt-1 focus:outline-blue-500" placeholder="••••••••">
+                </div>
+                <button type="submit" id="btnLoginSubmit" class="w-full bg-blue-600 text-white p-2.5 rounded font-bold hover:bg-blue-700 transition">
+                    Sign In / Login
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- MAIN KHATA INTERFACE -->
+    <div id="mainInterface" class="hidden">
+        <!-- Header -->
+        <header class="bg-blue-600 text-white p-4 shadow-md flex justify-between items-center">
+            <span class="text-xl font-bold tracking-wider">🚀 TEAM KHATA CONTROL ROOM (SECURED)</span>
+            <div class="flex items-center space-x-4">
+                <span id="lblUserEmail" class="text-sm bg-blue-700 px-3 py-1 rounded font-semibold"></span>
+                <button id="btnLogout" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm font-bold transition">Logout</button>
+            </div>
+        </header>
+
+        <div class="max-w-7xl mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+            
+            <!-- DATA ENTRY & UPDATE FORM -->
+            <div class="bg-white p-5 rounded-lg shadow-md md:col-span-1 h-fit">
+                <div class="flex mb-4 border-b">
+                    <button id="tabClient" onclick="switchTab('client')" class="w-1/2 pb-2 font-bold text-center border-b-2 border-blue-500 text-blue-600">👤 Client Form</button>
+                    <button id="tabExpense" onclick="switchTab('expense')" class="w-1/2 pb-2 font-bold text-center text-gray-500 hover:text-blue-500">💸 Naya Kharcha</button>
+                </div>
+
+                <form id="khataForm" class="space-y-3">
+                    <input type="hidden" id="formType" value="client">
+                    <input type="hidden" id="editDocId" value="">
+
+                    <!-- Client Fields -->
+                    <div id="clientFields" class="space-y-3">
+                        <div>
+                            <label class="block text-sm text-gray-600">Gahak ka Naam</label>
+                            <input type="text" id="clientName" class="w-full p-2 border rounded focus:outline-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600">ID Card (CNIC)</label>
+                            <input type="text" id="cnic" class="w-full p-2 border rounded focus:outline-blue-500">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600">Tracking ID</label>
+                            <input type="text" id="trackingId" class="w-full p-2 border rounded focus:outline-blue-500">
+                        </div>
+                        <div class="bg-purple-50 p-2 rounded border border-purple-200">
+                            <label class="block text-sm font-bold text-purple-700">Application / Maqsad</label>
+                            <input type="text" id="applicationType" class="w-full p-2 border rounded focus:outline-purple-500 font-semibold" placeholder="e.g. Passport, Online Form">
+                        </div>
+                        <div class="bg-blue-50 p-2 rounded border border-blue-200">
+                            <label class="block text-sm font-bold text-blue-700">Total Fee (Rs.)</label>
+                            <input type="number" id="totalFee" class="w-full p-2 border rounded focus:outline-blue-500 font-bold" value="0">
+                        </div>
+                        <div class="bg-green-50 p-2 rounded border border-green-200">
+                            <label class="block text-sm font-bold text-green-700">Paid Amount (Rs.) <span class="text-xs font-normal">(Jo Aage Di)</span></label>
+                            <input type="number" id="paidAmount" class="w-full p-2 border rounded focus:outline-green-500 font-bold" value="0">
+                        </div>
+                        <div class="bg-red-50 p-2 rounded border border-red-200">
+                            <label class="block text-sm font-bold text-red-700">Dues / Udhaar (Rs.)</label>
+                            <input type="number" id="duesAmount" class="w-full p-2 border rounded focus:outline-red-500 font-bold text-red-700" value="0">
+                        </div>
+                    </div>
+
+                    <!-- Expense Fields -->
+                    <div id="expenseFields" class="space-y-3 hidden">
+                        <div>
+                            <label class="block text-sm text-gray-600">Kharche ki Tafseel</label>
+                            <input type="text" id="expenseDetail" class="w-full p-2 border rounded focus:outline-blue-500" placeholder="Chai, Bill waghera">
+                        </div>
+                        <div>
+                            <label class="block text-sm text-gray-600">Kharche ki Raqam (Rs.)</label>
+                            <input type="number" id="expenseAmount" class="w-full p-2 border rounded focus:outline-blue-500" value="0">
+                        </div>
+                    </div>
+
+                    <!-- Common Field -->
+                    <div>
+                        <label class="block text-sm text-gray-600">Entry Kisne Ki?</label>
+                        <input type="text" id="handler" required class="w-full p-2 border rounded focus:outline-blue-500">
+                    </div>
+                    
+                    <!-- Live Display Box -->
+                    <div id="liveCalcBox" class="bg-gray-50 p-3 rounded border text-sm space-y-1">
+                        <div class="flex justify-between">
+                            <span>Is Entry Ka Expected Profit:</span>
+                            <span id="lblLiveProfit" class="font-bold text-green-600">Rs. 0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Status:</span>
+                            <span id="lblStatus" class="font-bold text-red-600">Pending</span>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btnSubmit" class="w-full bg-green-600 text-white p-2 rounded font-bold hover:bg-green-700 transition">
+                        Data Save Karein
+                    </button>
+                    <button type="button" id="btnCancelEdit" onclick="cancelEditMode()" class="w-full bg-gray-400 text-white p-2 rounded font-bold hover:bg-gray-500 transition hidden">
+                        Cancel Edit
+                    </button>
+                </form>
+            </div>
+
+            <!-- DATA DISPLAY TABLE & TOTALS -->
+            <div class="md:col-span-2 space-y-4">
+                
+                <!-- OVERALL SUMMARY BOXES -->
+                <div class="grid grid-cols-3 gap-2 md:gap-4">
+                    <div class="bg-gradient-to-r from-green-500 to-green-600 p-3 rounded-lg shadow text-white cursor-pointer" onclick="filterTable('all')">
+                        <p class="text-xs uppercase font-semibold opacity-90">Asli Profit (Hath ka Cash) 📋</p>
+                        <p id="totalProfitDisplay" class="text-xl font-bold mt-1">Rs. 0</p>
+                    </div>
+                    <div class="bg-gradient-to-r from-red-500 to-red-600 p-3 rounded-lg shadow text-white cursor-pointer" onclick="filterTable('dues')">
+                        <p class="text-xs uppercase font-semibold opacity-90">Total Dues (Gahak Udhaar) ⚠️</p>
+                        <p id="totalBalanceDisplay" class="text-xl font-bold mt-1">Rs. 0</p>
+                    </div>
+                    <div class="bg-gradient-to-r from-orange-500 to-orange-600 p-3 rounded-lg shadow text-white cursor-pointer" onclick="filterTable('expense')">
+                        <p class="text-xs uppercase font-semibold opacity-90">Kul Office Kharcha 💸</p>
+                        <p id="totalExpenseDisplay" class="text-xl font-bold mt-1">Rs. 0</p>
+                    </div>
+                </div>
+
+                <!-- TABLE -->
+                <div class="bg-white p-5 rounded-lg shadow-md overflow-x-auto">
+                    <div class="flex justify-between items-center mb-4 border-b pb-2">
+                        <h2 class="text-lg font-bold text-gray-700">Records (<span id="tableModeLabel">Sub Data</span>)</h2>
+                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded font-semibold">Live Updates</span>
+                    </div>
+                    <table class="w-full text-left border-collapse text-sm">
+                        <thead>
+                            <tr class="bg-gray-100 text-gray-600 uppercase text-xs">
+                                <th class="p-2 border">Details / Application</th>
+                                <th class="p-2 border">Handler</th>
+                                <th class="p-2 border">Hisaab Kitab</th>
+                                <th class="p-2 border">Status</th>
+                                <th class="p-2 border text-center">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="dataTable">
+                            <!-- Data automatic load hoga -->
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Firebase Code WITH DIAGNOSTIC AUTHENTICATION -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+        import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+        import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+        // Habib Bhai ka 100% Verified Config (From image_e5917f.png)
+        const firebaseConfig = {
+            apiKey: "AIzaSyCkKq8NhkJe3lfu83C7HrzitsZii5No9eg",
+            authDomain: "myteamcontrole.firebaseapp.com",
+            projectId: "myteamcontrole",
+            storageBucket: "myteamcontrole.firebasestorage.app",
+            messagingSenderId: "618519310380",
+            appId: "1:618519310380:web:5597bccc6e3d0b86b7a189",
+            measurementId: "G-E224LZD6TY"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const db = getFirestore(app);
+        const auth = getAuth(app);
+        const dataCollection = collection(db, "team_data");
+
+        let currentFilter = 'all'; 
+        let cachedDocs = [];
+        let unsubscribeSnapshot = null;
+
+        onAuthStateChanged(auth, (user) => {
+            if (user) {
+                document.getElementById('loginScreen').classList.add('hidden');
+                document.getElementById('mainInterface').classList.remove('hidden');
+                document.getElementById('lblUserEmail').innerText = "👤 " + user.email;
+                startRealtimeListener();
+            } else {
+                document.getElementById('loginScreen').classList.remove('hidden');
+                document.getElementById('mainInterface').classList.add('hidden');
+                if(unsubscribeSnapshot) unsubscribeSnapshot();
+            }
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = document.getElementById('btnLoginSubmit');
+            btn.innerText = "Checking...";
+            btn.disabled = true;
+
+            const email = document.getElementById('loginEmail').value.trim();
+            const password = document.getElementById('loginPassword').value;
+            
+            try {
+                await signInWithEmailAndPassword(auth, email, password);
+            } catch (error) {
+                console.error(error);
+                // Yeh alert ab exact wajah bataye ga ke masla kia he!
+                alert("Firebase Error: " + error.message + "\n\nCode: " + error.code);
+            } finally {
+                btn.innerText = "Sign In / Login";
+                btn.disabled = false;
+            }
+        });
+
+        document.getElementById('btnLogout').addEventListener('click', () => {
+            signOut(auth);
+        });
+
+        window.switchTab = function(type) {
+            document.getElementById('formType').value = type;
+            if(type === 'client') {
+                document.getElementById('clientFields').classList.remove('hidden');
+                document.getElementById('expenseFields').classList.add('hidden');
+                document.getElementById('liveCalcBox').classList.remove('hidden');
+                document.getElementById('tabClient').className = "w-1/2 pb-2 font-bold text-center border-b-2 border-blue-500 text-blue-600";
+                document.getElementById('tabExpense').className = "w-1/2 pb-2 font-bold text-center text-gray-500 hover:text-blue-500";
+            } else {
+                document.getElementById('clientFields').classList.add('hidden');
+                document.getElementById('expenseFields').classList.remove('hidden');
+                document.getElementById('liveCalcBox').classList.add('hidden');
+                document.getElementById('tabExpense').className = "w-1/2 pb-2 font-bold text-center border-b-2 border-blue-500 text-blue-600";
+                document.getElementById('tabClient').className = "w-1/2 pb-2 font-bold text-center text-gray-500 hover:text-blue-500";
+            }
+        }
+
+        const totalFeeInput = document.getElementById('totalFee');
+        const paidAmountInput = document.getElementById('paidAmount');
+        const duesAmountInput = document.getElementById('duesAmount');
+        const lblLiveProfit = document.getElementById('lblLiveProfit');
+        const lblStatus = document.getElementById('lblStatus');
+
+        function calculateLiveValues() {
+            const total = parseFloat(totalFeeInput.value) || 0;
+            const paid = parseFloat(paidAmountInput.value) || 0;
+            const dues = parseFloat(duesAmountInput.value) || 0;
+            
+            const expectedProfit = total - paid;
+            lblLiveProfit.innerText = "Rs. " + expectedProfit;
+
+            if (paid === 0) {
+                lblStatus.innerText = "Pending";
+                lblStatus.className = "font-bold text-red-600";
+            } else if (dues > 0) {
+                lblStatus.innerText = "Dues";
+                lblStatus.className = "font-bold text-orange-500";
+            } else if (total > 0 && dues === 0 && paid > 0) {
+                lblStatus.innerText = "Complete";
+                lblStatus.className = "font-bold text-green-600";
+            } else {
+                lblStatus.innerText = "Pending";
+                lblStatus.className = "font-bold text-red-600";
+            }
+        }
+        totalFeeInput.addEventListener('input', calculateLiveValues);
+        paidAmountInput.addEventListener('input', calculateLiveValues);
+        duesAmountInput.addEventListener('input', calculateLiveValues);
+
+        window.filterTable = function(filterType) {
+            currentFilter = filterType;
+            if(filterType === 'all') document.getElementById('tableModeLabel').innerText = "Sub Data";
+            if(filterType === 'dues') document.getElementById('tableModeLabel').innerText = "Sirf Dues/Udhaar Wale";
+            if(filterType === 'expense') document.getElementById('tableModeLabel').innerText = "Sirf Kharche";
+            renderTable();
+        }
+
+        document.getElementById('khataForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const type = document.getElementById('formType').value;
+            const editId = document.getElementById('editDocId').value;
+            
+            let payload = { type: type, handler: document.getElementById('handler').value };
+            
+            if(type === 'client') {
+                const total = parseFloat(document.getElementById('totalFee').value) || 0;
+                const paid = parseFloat(document.getElementById('paidAmount').value) || 0;
+                const dues = parseFloat(document.getElementById('duesAmount').value) || 0;
+                
+                let status = "Pending";
+                if (paid === 0) status = "Pending";
+                else if (dues > 0) status = "Dues";
+                else if (total > 0 && dues === 0 && paid > 0) status = "Complete";
+                
+                payload.clientName = document.getElementById('clientName').value;
+                payload.cnic = document.getElementById('cnic').value;
+                payload.trackingId = document.getElementById('trackingId').value;
+                payload.applicationType = document.getElementById('applicationType').value;
+                payload.totalFee = total;
+                payload.paidAmount = paid;
+                payload.duesAmount = dues;
+                payload.status = status;
+            } else {
+                payload.expenseDetail = document.getElementById('expenseDetail').value;
+                payload.expenseAmount = parseFloat(document.getElementById('expenseAmount').value) || 0;
+            }
+
+            try {
+                if(editId) {
+                    payload.lastEditedBy = auth.currentUser ? auth.currentUser.email : "Unknown"; 
+                    payload.lastEditedAt = new Date();
+
+                    await updateDoc(doc(db, "team_data", editId), payload);
+                    alert("Record Kamyabi se Update ho gaya!");
+                } else {
+                    payload.createdBy = auth.currentUser ? auth.currentUser.email : "Unknown";
+                    payload.timestamp = new Date();
+                    
+                    await addDoc(dataCollection, payload);
+                    alert("Naya Record Save ho gaya!");
+                }
+                cancelEditMode();
+            } catch (error) {
+                alert("Masla aaya: " + error.message);
+            }
+        });
+
+        function startRealtimeListener() {
+            unsubscribeSnapshot = onSnapshot(dataCollection, (snapshot) => {
+                cachedDocs = [];
+                snapshot.forEach(docSnap => {
+                    cachedDocs.push({ id: docSnap.id, data: docSnap.data() });
+                });
+                renderTable();
+            });
+        }
+
+        function renderTable() {
+            const dataTable = document.getElementById('dataTable');
+            dataTable.innerHTML = "";
+            
+            let totalClientFees = 0;
+            let totalPaidToAuthority = 0;
+            let totalOfficeExpenses = 0;
+            let grandTotalDues = 0;
+            
+            cachedDocs.forEach((item) => {
+                const data = item.data;
+                const id = item.id;
+                
+                if(data.type === 'expense') {
+                    totalOfficeExpenses += parseFloat(data.expenseAmount) || 0;
+                } else {
+                    totalClientFees += parseFloat(data.totalFee) || 0;
+                    totalPaidToAuthority += parseFloat(data.paidAmount) || 0;
+                    grandTotalDues += parseFloat(data.duesAmount) || 0;
+                }
+
+                if(currentFilter === 'dues' && (data.type === 'expense' || data.duesAmount <= 0)) return;
+                if(currentFilter === 'expense' && data.type !== 'expense') return;
+
+                const tr = document.createElement('tr');
+                
+                if(data.type === 'expense') {
+                    tr.className = "border-b bg-red-50 hover:bg-red-100";
+                    tr.innerHTML = `
+                        <td class="p-2 border"><div class="font-bold text-red-800">💸 KHARCHA: ${data.expenseDetail}</div></td>
+                        <td class="p-2 border text-gray-700">${data.handler}</td>
+                        <td class="p-2 border text-red-600 font-bold" colspan="2">Out: Rs. ${data.expenseAmount}</td>
+                        <td class="p-2 border text-center space-x-1">
+                            <button onclick="editRecord('${id}')" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600">Edit</button>
+                            <button onclick="deleteRecord('${id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Delete</button>
+                        </td>
+                    `;
+                } else {
+                    let statusBadgeColor = "bg-red-100 text-red-800"; 
+                    if(data.status === 'Complete') statusBadgeColor = "bg-green-100 text-green-800";
+                    if(data.status === 'Dues') statusBadgeColor = "bg-yellow-100 text-yellow-800";
+
+                    let singleProfit = (data.totalFee - data.duesAmount) - data.paidAmount;
+
+                    tr.className = "border-b hover:bg-gray-50";
+                    tr.innerHTML = `
+                        <td class="p-2 border">
+                            <div class="font-bold text-gray-800">👤 ${data.clientName || 'N/A'}</div>
+                            <div class="text-xs bg-purple-100 text-purple-800 font-semibold inline-block px-1.5 py-0.5 rounded my-0.5">📂 Job: ${data.applicationType || 'Not Set'}</div>
+                            <div class="text-xs text-gray-500">ID: ${data.cnic || ''} | Track: ${data.trackingId || ''}</div>
+                        </td>
+                        <td class="p-2 border text-gray-700">${data.handler}</td>
+                        <td class="p-2 border">
+                            <div class="text-xs text-gray-600">Total Fee: Rs. ${data.totalFee}</div>
+                            <div class="text-xs text-blue-600 font-bold">Paid Out: Rs. ${data.paidAmount}</div>
+                            <div class="text-xs text-red-600 font-bold">Gahak Dues: Rs. ${data.duesAmount}</div>
+                            <div class="text-xs text-green-700 font-bold border-t mt-1 pt-0.5">Net Profit: Rs. ${singleProfit}</div>
+                        </td>
+                        <td class="p-2 border">
+                            <span class="px-2 py-1 rounded text-xs font-bold ${statusBadgeColor}">
+                                ${data.status}
+                            </span>
+                        </td>
+                        <td class="p-2 border text-center space-x-1">
+                            <button onclick="editRecord('${id}')" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600">Edit</button>
+                            <button onclick="deleteRecord('${id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Delete</button>
+                        </td>
+                    `;
+                }
+                dataTable.appendChild(tr);
+            });
+            
+            let netProfit = (totalClientFees - grandTotalDues) - totalPaidToAuthority - totalOfficeExpenses;
+            
+            document.getElementById('totalProfitDisplay').innerText = "Rs. " + netProfit;
+            document.getElementById('totalExpenseDisplay').innerText = "Rs. " + totalOfficeExpenses;
+            document.getElementById('totalBalanceDisplay').innerText = "Rs. " + grandTotalDues;
+        }
+
+        window.editRecord = function(id) {
+            const match = cachedDocs.find(item => item.id === id);
+            if(!match) return;
+            const data = match.data;
+
+            document.getElementById('editDocId').value = id;
+            document.getElementById('handler').value = data.handler || '';
+            switchTab(data.type);
+
+            if(data.type === 'client') {
+                document.getElementById('clientName').value = data.clientName || '';
+                document.getElementById('cnic').value = data.cnic || '';
+                document.getElementById('trackingId').value = data.trackingId || '';
+                document.getElementById('applicationType').value = data.applicationType || '';
+                document.getElementById('totalFee').value = data.totalFee || 0;
+                document.getElementById('paidAmount').value = data.paidAmount || 0;
+                document.getElementById('duesAmount').value = data.duesAmount || 0;
+                calculateLiveValues();
+            } else {
+                document.getElementById('expenseDetail').value = data.expenseDetail || '';
+                document.getElementById('expenseAmount').value = data.expenseAmount || 0;
+            }
+
+            document.getElementById('btnSubmit').innerText = "Update Karein";
+            document.getElementById('btnSubmit').className = "w-full bg-blue-600 text-white p-2 rounded font-bold hover:bg-blue-700 transition";
+            document.getElementById('btnCancelEdit').classList.remove('hidden');
+        }
+
+        window.cancelEditMode = function() {
+            document.getElementById('khataForm').reset();
+            document.getElementById('editDocId').value = "";
+            document.getElementById('btnSubmit').innerText = "Data Save Karein";
+            document.getElementById('btnSubmit').className = "w-full bg-green-600 text-white p-2 rounded font-bold hover:bg-green-700 transition";
+            document.getElementById('btnCancelEdit').classList.add('hidden');
+            switchTab('client');
+            calculateLiveValues();
+        }
+
+        window.deleteRecord = async (id) => {
+            if(confirm("Kya aap waqai yeh record mita dena chahte hain?")) {
+                await deleteDoc(doc(db, "team_data", id));
+            }
+        }
+    </script>
+</body>
+</html>
