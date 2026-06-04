@@ -67,6 +67,11 @@
                             <label class="block text-sm text-gray-600">Tracking ID</label>
                             <input type="text" id="trackingId" class="w-full p-2 border rounded focus:outline-blue-500">
                         </div>
+                        <!-- 🔑 PASSWORD FIELD (Tracking ID ke bilkul neeche) -->
+                        <div>
+                            <label class="block text-sm text-gray-600 font-semibold text-purple-700">Password / Key</label>
+                            <input type="text" id="recordPassword" class="w-full p-2 border border-purple-200 rounded focus:outline-purple-500" placeholder="Optional Password">
+                        </div>
                         <div class="bg-purple-50 p-2 rounded border border-purple-200">
                             <label class="block text-sm font-bold text-purple-700">Application / Maqsad</label>
                             <input type="text" id="applicationType" class="w-full p-2 border rounded focus:outline-purple-500 font-semibold" placeholder="e.g. Passport, Online Form">
@@ -97,10 +102,10 @@
                         </div>
                     </div>
 
-                    <!-- Common Field -->
+                    <!-- Common Field - 🔒 AUTOMATIC & LOCKED -->
                     <div>
-                        <label class="block text-sm text-gray-600">Entry Kisne Ki?</label>
-                        <input type="text" id="handler" required class="w-full p-2 border rounded focus:outline-blue-500">
+                        <label class="block text-sm font-semibold text-gray-700">Entry Kisne Ki? (Auto)</label>
+                        <input type="text" id="handler" required class="w-full p-2 border rounded bg-gray-100 font-bold text-gray-700 cursor-not-allowed" readonly>
                     </div>
                     
                     <!-- Live Display Box -->
@@ -176,7 +181,7 @@
         import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // Habib Bhai ka 100% Verified Config (From image_e5917f.png)
+        // Habib Bhai ka 100% Verified Config
         const firebaseConfig = {
             apiKey: "AIzaSyCkKq8NhkJe3lfu83C7HrzitsZii5No9eg",
             authDomain: "myteamcontrole.firebaseapp.com",
@@ -192,6 +197,14 @@
         const auth = getAuth(app);
         const dataCollection = collection(db, "team_data");
 
+        // 👥 Operator Name Mapping List
+        const userNames = {
+            "ghulammustafaansari160@gmail.com": "mustafa",
+            "programmersukhera@gmail.com": "Shazad",
+            "habibmaster485@gmail.com": "Habib",
+            "hamzashopyt@gmail.com": "Hamza"
+        };
+
         let currentFilter = 'all'; 
         let cachedDocs = [];
         let unsubscribeSnapshot = null;
@@ -200,7 +213,12 @@
             if (user) {
                 document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('mainInterface').classList.remove('hidden');
-                document.getElementById('lblUserEmail').innerText = "👤 " + user.email;
+                
+                // Email check karke handler field lock karna
+                const currentName = userNames[user.email.toLowerCase()] || "Unknown User";
+                document.getElementById('lblUserEmail').innerText = "👤 " + currentName + " (" + user.email + ")";
+                document.getElementById('handler').value = currentName;
+                
                 startRealtimeListener();
             } else {
                 document.getElementById('loginScreen').classList.remove('hidden');
@@ -222,7 +240,6 @@
                 await signInWithEmailAndPassword(auth, email, password);
             } catch (error) {
                 console.error(error);
-                // Yeh alert ab exact wajah bataye ga ke masla kia he!
                 alert("Firebase Error: " + error.message + "\n\nCode: " + error.code);
             } finally {
                 btn.innerText = "Sign In / Login";
@@ -248,6 +265,11 @@
                 document.getElementById('liveCalcBox').classList.add('hidden');
                 document.getElementById('tabExpense').className = "w-1/2 pb-2 font-bold text-center border-b-2 border-blue-500 text-blue-600";
                 document.getElementById('tabClient').className = "w-1/2 pb-2 font-bold text-center text-gray-500 hover:text-blue-500";
+            }
+            // Tab switch hone par handler reset ho jaye
+            const currentUser = auth.currentUser;
+            if (currentUser) {
+                document.getElementById('handler').value = userNames[currentUser.email.toLowerCase()] || "Unknown User";
             }
         }
 
@@ -311,6 +333,7 @@
                 payload.clientName = document.getElementById('clientName').value;
                 payload.cnic = document.getElementById('cnic').value;
                 payload.trackingId = document.getElementById('trackingId').value;
+                payload.recordPassword = document.getElementById('recordPassword').value; // Saving Password
                 payload.applicationType = document.getElementById('applicationType').value;
                 payload.totalFee = total;
                 payload.paidAmount = paid;
@@ -400,7 +423,8 @@
                         <td class="p-2 border">
                             <div class="font-bold text-gray-800">👤 ${data.clientName || 'N/A'}</div>
                             <div class="text-xs bg-purple-100 text-purple-800 font-semibold inline-block px-1.5 py-0.5 rounded my-0.5">📂 Job: ${data.applicationType || 'Not Set'}</div>
-                            <div class="text-xs text-gray-500">ID: ${data.cnic || ''} | Track: ${data.trackingId || ''}</div>
+                            <div class="text-xs text-gray-500">CNIC: ${data.cnic || ''} | Track: ${data.trackingId || ''}</div>
+                            ${data.recordPassword ? `<div class="text-xs text-purple-700 font-bold">🔑 Key/Pass: ${data.recordPassword}</div>` : ''}
                         </td>
                         <td class="p-2 border text-gray-700">${data.handler}</td>
                         <td class="p-2 border">
@@ -443,6 +467,7 @@
                 document.getElementById('clientName').value = data.clientName || '';
                 document.getElementById('cnic').value = data.cnic || '';
                 document.getElementById('trackingId').value = data.trackingId || '';
+                document.getElementById('recordPassword').value = data.recordPassword || '';
                 document.getElementById('applicationType').value = data.applicationType || '';
                 document.getElementById('totalFee').value = data.totalFee || 0;
                 document.getElementById('paidAmount').value = data.paidAmount || 0;
