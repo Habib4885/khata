@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Khata Control Room - Secured Edition</title>
+    <title>Team Khata Control Room - Cashier Endorsement Edition</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -33,12 +33,34 @@
     <div id="mainInterface" class="hidden">
         <!-- Header -->
         <header class="bg-blue-600 text-white p-4 shadow-md flex justify-between items-center">
-            <span class="text-xl font-bold tracking-wider">🚀 TEAM KHATA CONTROL ROOM (SECURED)</span>
+            <span class="text-xl font-bold tracking-wider">🚀 TEAM KHATA CONTROL ROOM (CASHIER SYSTEM)</span>
             <div class="flex items-center space-x-4">
                 <span id="lblUserEmail" class="text-sm bg-blue-700 px-3 py-1 rounded font-semibold"></span>
                 <button id="btnLogout" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm font-bold transition">Logout</button>
             </div>
         </header>
+
+        <!-- CASH ENDORSEMENT MODAL (POPUP FOR CASHIER ONLY) -->
+        <div id="endorseModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 p-4">
+            <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
+                <h3 class="text-lg font-bold text-gray-800 mb-4">💰 Cash Endorsement / Tasdeeq</h3>
+                <p class="text-sm text-gray-600 mb-4">Kya aap ko is entry ki raqam cash mein mil gayi hai? Meharbani karke select karein ke paise kis bande ne jama karwaye hain:</p>
+                <input type="hidden" id="endorseDocId">
+                <div class="mb-4">
+                    <label class="block text-sm font-semibold text-gray-700 mb-1">Paid By (Paise Kisne Diye?)</label>
+                    <select id="paidBySelect" class="w-full p-2.5 border rounded focus:outline-blue-500 font-medium">
+                        <option value="mustafa">mustafa</option>
+                        <option value="Shazad">Shazad</option>
+                        <option value="Habib">Habib</option>
+                        <option value="Hamza">Hamza</option>
+                    </select>
+                </div>
+                <div class="flex space-x-2 justify-end">
+                    <button onclick="closeEndorseModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded font-semibold text-sm">Cancel</button>
+                    <button onclick="submitEndorsement()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-semibold text-sm">Verify & Receive Cash</button>
+                </div>
+            </div>
+        </div>
 
         <div class="max-w-7xl mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-6">
             
@@ -67,7 +89,6 @@
                             <label class="block text-sm text-gray-600">Tracking ID</label>
                             <input type="text" id="trackingId" class="w-full p-2 border rounded focus:outline-blue-500">
                         </div>
-                        <!-- 🔑 PASSWORD FIELD (Tracking ID ke bilkul neeche) -->
                         <div>
                             <label class="block text-sm text-gray-600 font-semibold text-purple-700">Password / Key</label>
                             <input type="text" id="recordPassword" class="w-full p-2 border border-purple-200 rounded focus:outline-purple-500" placeholder="Optional Password">
@@ -102,7 +123,7 @@
                         </div>
                     </div>
 
-                    <!-- Common Field - 🔒 AUTOMATIC & LOCKED -->
+                    <!-- Common Field - AUTOMATIC & LOCKED -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700">Entry Kisne Ki? (Auto)</label>
                         <input type="text" id="handler" required class="w-full p-2 border rounded bg-gray-100 font-bold text-gray-700 cursor-not-allowed" readonly>
@@ -132,11 +153,15 @@
             <!-- DATA DISPLAY TABLE & TOTALS -->
             <div class="md:col-span-2 space-y-4">
                 
-                <!-- OVERALL SUMMARY BOXES -->
-                <div class="grid grid-cols-3 gap-2 md:gap-4">
-                    <div class="bg-gradient-to-r from-green-500 to-green-600 p-3 rounded-lg shadow text-white cursor-pointer" onclick="filterTable('all')">
-                        <p class="text-xs uppercase font-semibold opacity-90">Asli Profit (Hath ka Cash) 📋</p>
+                <!-- SUMMARY BOXES -->
+                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
+                    <div class="bg-gradient-to-r from-green-600 to-green-700 p-3 rounded-lg shadow text-white cursor-pointer" onclick="filterTable('all')">
+                        <p class="text-xs uppercase font-semibold opacity-90">Verified Profit (Cash in Drawer) 💰</p>
                         <p id="totalProfitDisplay" class="text-xl font-bold mt-1">Rs. 0</p>
+                    </div>
+                    <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 p-3 rounded-lg shadow text-white cursor-pointer" onclick="filterTable('pending_cash')">
+                        <p class="text-xs uppercase font-semibold opacity-90">Kacha Cash (Pending Verification) ⏳</p>
+                        <p id="totalPendingCashDisplay" class="text-xl font-bold mt-1">Rs. 0</p>
                     </div>
                     <div class="bg-gradient-to-r from-red-500 to-red-600 p-3 rounded-lg shadow text-white cursor-pointer" onclick="filterTable('dues')">
                         <p class="text-xs uppercase font-semibold opacity-90">Total Dues (Gahak Udhaar) ⚠️</p>
@@ -160,7 +185,7 @@
                                 <th class="p-2 border">Details / Application</th>
                                 <th class="p-2 border">Handler</th>
                                 <th class="p-2 border">Hisaab Kitab</th>
-                                <th class="p-2 border">Status</th>
+                                <th class="p-2 border">Cash Status</th>
                                 <th class="p-2 border text-center">Actions</th>
                             </tr>
                         </thead>
@@ -175,13 +200,12 @@
         </div>
     </div>
 
-    <!-- Firebase Code WITH DIAGNOSTIC AUTHENTICATION -->
+    <!-- Firebase Code -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
         import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
 
-        // Habib Bhai ka 100% Verified Config
         const firebaseConfig = {
             apiKey: "AIzaSyCkKq8NhkJe3lfu83C7HrzitsZii5No9eg",
             authDomain: "myteamcontrole.firebaseapp.com",
@@ -197,7 +221,6 @@
         const auth = getAuth(app);
         const dataCollection = collection(db, "team_data");
 
-        // 👥 Operator Name Mapping List
         const userNames = {
             "ghulammustafaansari160@gmail.com": "mustafa",
             "programmersukhera@gmail.com": "Shazad",
@@ -205,6 +228,8 @@
             "hamzashopyt@gmail.com": "Hamza"
         };
 
+        const CASHIER_EMAIL = "ghulammustafaansari160@gmail.com";
+        let isCashier = false;
         let currentFilter = 'all'; 
         let cachedDocs = [];
         let unsubscribeSnapshot = null;
@@ -214,9 +239,10 @@
                 document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('mainInterface').classList.remove('hidden');
                 
-                // Email check karke handler field lock karna
+                isCashier = (user.email.toLowerCase() === CASHIER_EMAIL.toLowerCase());
                 const currentName = userNames[user.email.toLowerCase()] || "Unknown User";
-                document.getElementById('lblUserEmail').innerText = "👤 " + currentName + " (" + user.email + ")";
+                
+                document.getElementById('lblUserEmail').innerText = (isCashier ? "💰 Cashier: " : "👤 ") + currentName + " (" + user.email + ")";
                 document.getElementById('handler').value = currentName;
                 
                 startRealtimeListener();
@@ -239,8 +265,7 @@
             try {
                 await signInWithEmailAndPassword(auth, email, password);
             } catch (error) {
-                console.error(error);
-                alert("Firebase Error: " + error.message + "\n\nCode: " + error.code);
+                alert("Firebase Error: " + error.message);
             } finally {
                 btn.innerText = "Sign In / Login";
                 btn.disabled = false;
@@ -266,7 +291,6 @@
                 document.getElementById('tabExpense').className = "w-1/2 pb-2 font-bold text-center border-b-2 border-blue-500 text-blue-600";
                 document.getElementById('tabClient').className = "w-1/2 pb-2 font-bold text-center text-gray-500 hover:text-blue-500";
             }
-            // Tab switch hone par handler reset ho jaye
             const currentUser = auth.currentUser;
             if (currentUser) {
                 document.getElementById('handler').value = userNames[currentUser.email.toLowerCase()] || "Unknown User";
@@ -310,6 +334,7 @@
             if(filterType === 'all') document.getElementById('tableModeLabel').innerText = "Sub Data";
             if(filterType === 'dues') document.getElementById('tableModeLabel').innerText = "Sirf Dues/Udhaar Wale";
             if(filterType === 'expense') document.getElementById('tableModeLabel').innerText = "Sirf Kharche";
+            if(filterType === 'pending_cash') document.getElementById('tableModeLabel').innerText = "Kacha Cash (Unverified)";
             renderTable();
         }
 
@@ -333,12 +358,18 @@
                 payload.clientName = document.getElementById('clientName').value;
                 payload.cnic = document.getElementById('cnic').value;
                 payload.trackingId = document.getElementById('trackingId').value;
-                payload.recordPassword = document.getElementById('recordPassword').value; // Saving Password
+                payload.recordPassword = document.getElementById('recordPassword').value;
                 payload.applicationType = document.getElementById('applicationType').value;
                 payload.totalFee = total;
                 payload.paidAmount = paid;
                 payload.duesAmount = dues;
                 payload.status = status;
+                
+                // Agar nayi entry hai toh automatic endorsement Pending hogi
+                if(!editId) {
+                    payload.cashVerified = false;
+                    payload.paidBy = "";
+                }
             } else {
                 payload.expenseDetail = document.getElementById('expenseDetail').value;
                 payload.expenseAmount = parseFloat(document.getElementById('expenseAmount').value) || 0;
@@ -346,15 +377,11 @@
 
             try {
                 if(editId) {
-                    payload.lastEditedBy = auth.currentUser ? auth.currentUser.email : "Unknown"; 
-                    payload.lastEditedAt = new Date();
-
                     await updateDoc(doc(db, "team_data", editId), payload);
                     alert("Record Kamyabi se Update ho gaya!");
                 } else {
                     payload.createdBy = auth.currentUser ? auth.currentUser.email : "Unknown";
                     payload.timestamp = new Date();
-                    
                     await addDoc(dataCollection, payload);
                     alert("Naya Record Save ho gaya!");
                 }
@@ -363,6 +390,33 @@
                 alert("Masla aaya: " + error.message);
             }
         });
+
+        // 💰 Cashier Endorsement Window Functions
+        window.openEndorseModal = function(id) {
+            document.getElementById('endorseDocId').value = id;
+            document.getElementById('endorseModal').classList.remove('hidden');
+        }
+
+        window.closeEndorseModal = function() {
+            document.getElementById('endorseModal').classList.add('hidden');
+        }
+
+        window.submitEndorsement = async function() {
+            const id = document.getElementById('endorseDocId').value;
+            const selectedPaidBy = document.getElementById('paidBySelect').value;
+            
+            try {
+                await updateDoc(doc(db, "team_data", id), {
+                    cashVerified: true,
+                    paidBy: selectedPaidBy,
+                    verifiedAt: new Date()
+                });
+                alert("Cash Kamyabi se Tasdeeq (Verify) ho gaya!");
+                closeEndorseModal();
+            } catch (error) {
+                alert("Verification mein error: " + error.message);
+            }
+        }
 
         function startRealtimeListener() {
             unsubscribeSnapshot = onSnapshot(dataCollection, (snapshot) => {
@@ -378,8 +432,8 @@
             const dataTable = document.getElementById('dataTable');
             dataTable.innerHTML = "";
             
-            let totalClientFees = 0;
-            let totalPaidToAuthority = 0;
+            let totalVerifiedProfit = 0;
+            let totalPendingCash = 0;
             let totalOfficeExpenses = 0;
             let grandTotalDues = 0;
             
@@ -387,16 +441,24 @@
                 const data = item.data;
                 const id = item.id;
                 
-                if(data.type === 'expense') {
-                    totalOfficeExpenses += parseFloat(data.expenseAmount) || 0;
-                } else {
-                    totalClientFees += parseFloat(data.totalFee) || 0;
-                    totalPaidToAuthority += parseFloat(data.paidAmount) || 0;
+                let singleProfit = 0;
+                if(data.type !== 'expense') {
+                    singleProfit = (data.totalFee - data.duesAmount) - data.paidAmount;
+                    
+                    // Box mapping algorithm based on cashier verification
+                    if(data.cashVerified === true) {
+                        totalVerifiedProfit += singleProfit;
+                    } else {
+                        totalPendingCash += singleProfit;
+                    }
                     grandTotalDues += parseFloat(data.duesAmount) || 0;
+                } else {
+                    totalOfficeExpenses += parseFloat(data.expenseAmount) || 0;
                 }
 
                 if(currentFilter === 'dues' && (data.type === 'expense' || data.duesAmount <= 0)) return;
                 if(currentFilter === 'expense' && data.type !== 'expense') return;
+                if(currentFilter === 'pending_cash' && (data.type === 'expense' || data.cashVerified === true)) return;
 
                 const tr = document.createElement('tr');
                 
@@ -416,7 +478,24 @@
                     if(data.status === 'Complete') statusBadgeColor = "bg-green-100 text-green-800";
                     if(data.status === 'Dues') statusBadgeColor = "bg-yellow-100 text-yellow-800";
 
-                    let singleProfit = (data.totalFee - data.duesAmount) - data.paidAmount;
+                    // Cash Status Template
+                    let cashStatusHTML = "";
+                    if(data.cashVerified === true) {
+                        cashStatusHTML = `
+                            <div class="text-xs text-green-700 font-bold">✅ Received By Cashier</div>
+                            <div class="text-[11px] text-gray-500">Paid by: <span class="uppercase font-semibold text-blue-600">${data.paidBy || 'N/A'}</span></div>
+                        `;
+                    } else {
+                        if(isCashier) {
+                            cashStatusHTML = `
+                                <button onclick="openEndorseModal('${id}')" class="bg-amber-500 text-white px-2 py-1 rounded text-xs font-bold hover:bg-amber-600 shadow-sm transition animate-pulse">
+                                    💰 Endorse Cash
+                                </button>
+                            `;
+                        } else {
+                            cashStatusHTML = `<span class="text-xs text-amber-600 font-semibold italic">⏳ Awaiting Cashier</span>`;
+                        }
+                    }
 
                     tr.className = "border-b hover:bg-gray-50";
                     tr.innerHTML = `
@@ -433,11 +512,7 @@
                             <div class="text-xs text-red-600 font-bold">Gahak Dues: Rs. ${data.duesAmount}</div>
                             <div class="text-xs text-green-700 font-bold border-t mt-1 pt-0.5">Net Profit: Rs. ${singleProfit}</div>
                         </td>
-                        <td class="p-2 border">
-                            <span class="px-2 py-1 rounded text-xs font-bold ${statusBadgeColor}">
-                                ${data.status}
-                            </span>
-                        </td>
+                        <td class="p-2 border vertical-align-middle">${cashStatusHTML}</td>
                         <td class="p-2 border text-center space-x-1">
                             <button onclick="editRecord('${id}')" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600">Edit</button>
                             <button onclick="deleteRecord('${id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Delete</button>
@@ -447,9 +522,11 @@
                 dataTable.appendChild(tr);
             });
             
-            let netProfit = (totalClientFees - grandTotalDues) - totalPaidToAuthority - totalOfficeExpenses;
+            // Final Profit after deducting Expenses
+            let netVerifiedProfit = totalVerifiedProfit - totalOfficeExpenses;
             
-            document.getElementById('totalProfitDisplay').innerText = "Rs. " + netProfit;
+            document.getElementById('totalProfitDisplay').innerText = "Rs. " + netVerifiedProfit;
+            document.getElementById('totalPendingCashDisplay').innerText = "Rs. " + totalPendingCash;
             document.getElementById('totalExpenseDisplay').innerText = "Rs. " + totalOfficeExpenses;
             document.getElementById('totalBalanceDisplay').innerText = "Rs. " + grandTotalDues;
         }
