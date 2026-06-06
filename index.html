@@ -10,15 +10,14 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#2563eb">
     
-    <!-- App Icons (Chrome ka icon hata kar yeh wala layega) -->
-    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2691/2691522.png">
+    <!-- App Icons -->
+    <link class="rounded-2xl" rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2691/2691522.png">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2691/2691522.png">
 
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
-        /* Mobile Touch Optimizations */
         body { -webkit-tap-highlight-color: transparent; }
         .custom-scroll::-webkit-scrollbar { display: none; }
     </style>
@@ -62,12 +61,12 @@
 
         <!-- CASH ENDORSEMENT MODAL -->
         <div id="endorseModal" class="fixed inset-0 bg-black/60 hidden flex items-center justify-center z-50 p-4 backdrop-blur-xs">
-            <div class="bg-white p-5 rounded-2xl shadow-xl w-full max-w-sm animate-zoomIn">
+            <div class="bg-white p-5 rounded-2xl shadow-xl w-full max-w-sm">
                 <h3 class="text-base font-black text-gray-800 mb-2">💰 Cash Endorsement</h3>
-                <p class="text-xs text-gray-500 mb-4">Meharbani karke tasdeeq karein ke paise kis bande ne jama karwaye hain:</p>
+                <p class="text-xs text-gray-500 mb-4">Meharbani karke tasdeeq karein ke paise kisne jama karwaye hain:</p>
                 <input type="hidden" id="endorseDocId">
                 <div class="mb-4">
-                    <label class="block text-xs font-bold text-gray-600 mb-1">Paid By (Paise Kisne Diye?)</label>
+                    <label class="block text-xs font-bold text-gray-600 mb-1">Paid By</label>
                     <select id="paidBySelect" class="w-full p-3 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 font-bold text-sm bg-gray-50">
                         <option value="mustafa">mustafa</option>
                         <option value="Shazad">Shazad</option>
@@ -85,7 +84,7 @@
         <!-- MAIN CONTAINER -->
         <div class="max-w-md mx-auto p-3 space-y-4">
             
-            <!-- SUMMARY WIDGETS (HORIZONTAL SCROLL ON MOBILE) -->
+            <!-- SUMMARY WIDGETS -->
             <div class="flex space-x-2 overflow-x-auto pb-1 custom-scroll snap-x">
                 <div class="bg-white border border-gray-100 p-3 rounded-xl shadow-xs min-w-[125px] flex-1 snap-start cursor-pointer" onclick="filterTable('all')">
                     <p class="text-[10px] uppercase font-bold text-gray-400">Verified Profit</p>
@@ -121,53 +120,53 @@
                         <div class="grid grid-cols-2 gap-2">
                             <div>
                                 <label class="font-bold text-gray-500">Tareekh / Date</label>
-                                <input type="date" id="clientDate" required class="w-full p-2.5 border border-gray-200 bg-gray-50 rounded-xl mt-1 font-bold focus:outline-none focus:border-blue-500">
+                                <input type="date" id="clientDate" required class="w-full p-2.5 border border-gray-200 bg-gray-50 rounded-xl mt-1 font-bold focus:outline-none">
                             </div>
                             <div>
                                 <label class="font-bold text-gray-500">Gahak ka Naam</label>
-                                <input type="text" id="clientName" required class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none focus:border-blue-500">
+                                <input type="text" id="clientName" required class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none">
                             </div>
                         </div>
                         
                         <div class="grid grid-cols-2 gap-2">
                             <div>
                                 <label class="font-bold text-gray-500">ID Card (CNIC)</label>
-                                <input type="text" id="cnic" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none focus:border-blue-500" placeholder="Optional">
+                                <input type="text" id="cnic" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none" placeholder="Optional">
                             </div>
                             <div>
                                 <label class="font-bold text-gray-500">Tracking ID</label>
-                                <input type="text" id="trackingId" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none focus:border-blue-500" placeholder="Optional">
+                                <input type="text" id="trackingId" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none" placeholder="Optional">
                             </div>
                         </div>
 
                         <div class="grid grid-cols-2 gap-2">
                             <div>
                                 <label class="font-bold text-gray-500">Mobile Number</label>
-                                <input type="text" id="mobileNumber" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none focus:border-blue-500" placeholder="03001234567">
+                                <input type="text" id="mobileNumber" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none" placeholder="03001234567">
                             </div>
                             <div>
                                 <label class="font-bold text-purple-700">Password / Key</label>
-                                <input type="text" id="recordPassword" class="w-full p-2.5 border border-purple-200 rounded-xl mt-1 focus:outline-none focus:border-purple-500" placeholder="Optional Password">
+                                <input type="text" id="recordPassword" class="w-full p-2.5 border border-purple-200 rounded-xl mt-1 focus:outline-none" placeholder="Optional Password">
                             </div>
                         </div>
 
                         <div>
                             <label class="font-bold text-purple-700">Application / Maqsad</label>
-                            <input type="text" id="applicationType" class="w-full p-2.5 border border-purple-200 rounded-xl mt-1 focus:outline-none focus:border-purple-500 font-semibold" placeholder="e.g. Passport, Online Form">
+                            <input type="text" id="applicationType" class="w-full p-2.5 border border-purple-200 rounded-xl mt-1 focus:outline-none font-semibold" placeholder="e.g. Passport, Online Form">
                         </div>
 
                         <div class="grid grid-cols-3 gap-1.5 bg-gray-50 p-2.5 rounded-xl border border-dashed">
                             <div>
                                 <label class="font-bold text-blue-600 block text-[10px]">Total Fee</label>
-                                <input type="number" id="totalFee" class="w-full p-1.5 border rounded-lg mt-0.5 text-center font-bold text-sm focus:outline-none" value="0">
+                                <input type="number" id="totalFee" class="w-full p-1.5 border rounded-lg mt-0.5 text-center font-bold text-sm" value="0">
                             </div>
                             <div>
                                 <label class="font-bold text-green-600 block text-[10px]">Paid Amt</label>
-                                <input type="number" id="paidAmount" class="w-full p-1.5 border rounded-lg mt-0.5 text-center font-bold text-sm focus:outline-none" value="0">
+                                <input type="number" id="paidAmount" class="w-full p-1.5 border rounded-lg mt-0.5 text-center font-bold text-sm" value="0">
                             </div>
                             <div>
                                 <label class="font-bold text-red-500 block text-[10px]">Gahak Dues</label>
-                                <input type="number" id="duesAmount" class="w-full p-1.5 border rounded-lg mt-0.5 text-center font-bold text-sm text-red-600 focus:outline-none" value="0">
+                                <input type="number" id="duesAmount" class="w-full p-1.5 border rounded-lg mt-0.5 text-center font-bold text-sm text-red-600" value="0">
                             </div>
                         </div>
                     </div>
@@ -180,7 +179,7 @@
                         </div>
                         <div>
                             <label class="font-bold text-gray-500">Kharche ki Tafseel</label>
-                            <input type="text" id="expenseDetail" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1" placeholder="Chai, Bill, Internet waghera">
+                            <input type="text" id="expenseDetail" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1" placeholder="Chai, Bill...">
                         </div>
                         <div>
                             <label class="font-bold text-gray-500">Kharche ki Raqam (Rs.)</label>
@@ -205,21 +204,21 @@
                 </form>
             </div>
 
-            <!-- 🔍 MOBILE SEARCH BAR -->
+            <!-- 🔍 FIXED & IMPROVED SEARCH BAR -->
             <div class="bg-white p-3 rounded-2xl shadow-xs border border-blue-200 flex items-center space-x-2 text-xs">
                 <span class="text-blue-600 font-bold">🔍 Search:</span>
-                <input type="text" id="tableSearchInput" oninput="renderTable()" placeholder="Naam, CNIC, ID ya Date (DD/MM/YYYY)..." class="w-full p-2 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-400">
+                <input type="text" id="tableSearchInput" placeholder="Naam, CNIC, ID ya Date likhein..." class="w-full p-2 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-400">
             </div>
 
-            <!-- STREAMLINED CELL LIST (NO OVERFLOW TABLES) -->
+            <!-- RECORD LIST -->
             <div class="space-y-2">
                 <div class="flex justify-between items-center px-1">
                     <h2 class="text-xs font-black text-gray-500 uppercase tracking-wider">Khata Records List</h2>
-                    <span class="text-[10px] bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded-full">Live Live</span>
+                    <span class="text-[10px] bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded-full">Live Connection</span>
                 </div>
                 
                 <div id="dataTable" class="space-y-2">
-                    <!-- Cards will be injected smoothly here via JS -->
+                    <!-- Cards will render here -->
                 </div>
             </div>
 
@@ -263,6 +262,11 @@
         const todayStr = new Date().toISOString().split('T')[0];
         document.getElementById('clientDate').value = todayStr;
         document.getElementById('expenseDate').value = todayStr;
+
+        // Search Input Event Listener to render instantly as user types
+        document.getElementById('tableSearchInput').addEventListener('input', () => {
+            renderTable();
+        });
 
         onAuthStateChanged(auth, (user) => {
             if (user) {
@@ -411,6 +415,7 @@
             });
         }
 
+        // FULLY FIXED SEARCH LOGIC (LOWERCASE INSENSITIVE)
         function renderTable() {
             const container = document.getElementById('dataTable');
             const searchVal = document.getElementById('tableSearchInput').value.toLowerCase().trim();
@@ -429,13 +434,27 @@
                     if(parts.length === 3) displayDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
                 }
 
+                // Super Search Match Fix
                 if (searchVal) {
                     const cName = (data.clientName || "").toLowerCase();
                     const cnicNo = (data.cnic || "").toLowerCase();
                     const tId = (data.trackingId || "").toLowerCase();
                     const expDet = (data.expenseDetail || "").toLowerCase();
+                    const appType = (data.applicationType || "").toLowerCase();
+                    const mobNo = (data.mobileNumber || "").toLowerCase();
+                    const handlerName = (data.handler || "").toLowerCase();
                     const dStr = displayDate.toLowerCase();
-                    if (!cName.includes(searchVal) && !cnicNo.includes(searchVal) && !tId.includes(searchVal) && !dStr.includes(searchVal) && !expDet.includes(searchVal)) return;
+                    
+                    if (!cName.includes(searchVal) && 
+                        !cnicNo.includes(searchVal) && 
+                        !tId.includes(searchVal) && 
+                        !dStr.includes(searchVal) && 
+                        !expDet.includes(searchVal) && 
+                        !appType.includes(searchVal) &&
+                        !mobNo.includes(searchVal) &&
+                        !handlerName.includes(searchVal)) {
+                        return; // Agar match na kare toh is record ko skip kardo
+                    }
                 }
 
                 let singleProfit = 0;
@@ -506,7 +525,6 @@
                         </div>
                     </div>
                     
-                    <!-- Expanded Mobile Drawer Panel -->
                     <div id="detail-${id}" class="hidden bg-gray-50 border-t p-3 space-y-2 text-[11px] border-dashed">
                         <div class="grid grid-cols-2 gap-2 text-gray-600">
                             <div>
