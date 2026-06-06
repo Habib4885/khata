@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Khata Control Room - Double-Lock Edition</title>
+    <title>Team Khata Control Room - Clean UI Edition</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
@@ -33,7 +33,7 @@
     <div id="mainInterface" class="hidden">
         <!-- Header -->
         <header class="bg-blue-600 text-white p-4 shadow-md flex justify-between items-center">
-            <span class="text-xl font-bold tracking-wider">🚀 TEAM KHATA CONTROL ROOM (DOUBLE-LOCK)</span>
+            <span class="text-xl font-bold tracking-wider">🚀 TEAM KHATA CONTROL ROOM</span>
             <div class="flex items-center space-x-4">
                 <span id="lblUserEmail" class="text-sm bg-blue-700 px-3 py-1 rounded font-semibold"></span>
                 <button id="btnLogout" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm font-bold transition">Logout</button>
@@ -44,7 +44,7 @@
         <div id="endorseModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 p-4">
             <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
                 <h3 class="text-lg font-bold text-gray-800 mb-4">💰 Cash Endorsement / Tasdeeq</h3>
-                <p class="text-sm text-gray-600 mb-4">Kya aap ko is entry ki raqam cash mein mil gayi hai? Meharbani karke select karein ke paise kis bande ne jama karwaye hain:</p>
+                <p class="text-sm text-gray-600 mb-4">Meharbani karke select karein ke paise kis bande ne jama karwaye hain:</p>
                 <input type="hidden" id="endorseDocId">
                 <div class="mb-4">
                     <label class="block text-sm font-semibold text-gray-700 mb-1">Paid By (Paise Kisne Diye?)</label>
@@ -77,6 +77,11 @@
 
                     <!-- Client Fields -->
                     <div id="clientFields" class="space-y-3">
+                        <!-- 📅 CALENDAR FIELD -->
+                        <div>
+                            <label class="block text-sm font-semibold text-blue-700">Tareekh / Date</label>
+                            <input type="date" id="clientDate" required class="w-full p-2 border border-blue-300 rounded focus:outline-blue-500 font-bold text-gray-700">
+                        </div>
                         <div>
                             <label class="block text-sm text-gray-600">Gahak ka Naam</label>
                             <input type="text" id="clientName" required class="w-full p-2 border rounded focus:outline-blue-500">
@@ -89,15 +94,14 @@
                             <label class="block text-sm text-gray-600">Tracking ID</label>
                             <input type="text" id="trackingId" class="w-full p-2 border rounded focus:outline-blue-500">
                         </div>
-                        <!-- 🔑 PASSWORD FIELD -->
+                        <!-- 📞 MOBILE NUMBER FIELD -->
+                        <div>
+                            <label class="block text-sm text-gray-600">Mobile Number</label>
+                            <input type="text" id="mobileNumber" class="w-full p-2 border rounded focus:outline-blue-500" placeholder="e.g. 03001234567">
+                        </div>
                         <div>
                             <label class="block text-sm text-gray-600 font-semibold text-purple-700">Password / Key</label>
                             <input type="text" id="recordPassword" class="w-full p-2 border border-purple-200 rounded focus:outline-purple-500" placeholder="Optional Password">
-                        </div>
-                        <!-- 📱 OPTIONAL WHATSAPP FIELD -->
-                        <div>
-                            <label class="block text-sm text-gray-600 font-semibold text-green-700">WhatsApp Number (Optional)</label>
-                            <input type="text" id="whatsappNumber" class="w-full p-2 border border-green-200 rounded focus:outline-green-500" placeholder="e.g. 923001234567">
                         </div>
                         <div class="bg-purple-50 p-2 rounded border border-purple-200">
                             <label class="block text-sm font-bold text-purple-700">Application / Maqsad</label>
@@ -120,6 +124,10 @@
                     <!-- Expense Fields -->
                     <div id="expenseFields" class="space-y-3 hidden">
                         <div>
+                            <label class="block text-sm font-semibold text-blue-700">Kharche ki Tareekh</label>
+                            <input type="date" id="expenseDate" class="w-full p-2 border border-blue-300 rounded focus:outline-blue-500 font-bold text-gray-700">
+                        </div>
+                        <div>
                             <label class="block text-sm text-gray-600">Kharche ki Tafseel</label>
                             <input type="text" id="expenseDetail" class="w-full p-2 border rounded focus:outline-blue-500" placeholder="Chai, Bill waghera">
                         </div>
@@ -129,24 +137,12 @@
                         </div>
                     </div>
 
-                    <!-- Common Field - AUTOMATIC & LOCKED -->
+                    <!-- Common Field - AUTOMATIC -->
                     <div>
                         <label class="block text-sm font-semibold text-gray-700">Entry Kisne Ki? (Auto)</label>
                         <input type="text" id="handler" required class="w-full p-2 border rounded bg-gray-100 font-bold text-gray-700 cursor-not-allowed" readonly>
                     </div>
                     
-                    <!-- Live Display Box -->
-                    <div id="liveCalcBox" class="bg-gray-50 p-3 rounded border text-sm space-y-1">
-                        <div class="flex justify-between">
-                            <span>Is Entry Ka Expected Profit:</span>
-                            <span id="lblLiveProfit" class="font-bold text-green-600">Rs. 0</span>
-                        </div>
-                        <div class="flex justify-between">
-                            <span>Status:</span>
-                            <span id="lblStatus" class="font-bold text-red-600">Pending</span>
-                        </div>
-                    </div>
-
                     <button type="submit" id="btnSubmit" class="w-full bg-green-600 text-white p-2 rounded font-bold hover:bg-green-700 transition">
                         Data Save Karein
                     </button>
@@ -162,43 +158,36 @@
                 <!-- SUMMARY BOXES -->
                 <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
                     <div class="bg-gradient-to-r from-green-600 to-green-700 p-3 rounded-lg shadow text-white cursor-pointer" onclick="filterTable('all')">
-                        <p class="text-xs uppercase font-semibold opacity-90">Verified Profit (Drawer Cash) 💰</p>
+                        <p class="text-xs uppercase font-semibold opacity-90">Verified Profit 💰</p>
                         <p id="totalProfitDisplay" class="text-xl font-bold mt-1">Rs. 0</p>
                     </div>
                     <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 p-3 rounded-lg shadow text-white cursor-pointer" onclick="filterTable('pending_cash')">
-                        <p class="text-xs uppercase font-semibold opacity-90">Kacha Cash (Pending Verification) ⏳</p>
+                        <p class="text-xs uppercase font-semibold opacity-90">Kacha Cash ⏳</p>
                         <p id="totalPendingCashDisplay" class="text-xl font-bold mt-1">Rs. 0</p>
                     </div>
                     <div class="bg-gradient-to-r from-red-500 to-red-600 p-3 rounded-lg shadow text-white cursor-pointer" onclick="filterTable('dues')">
-                        <p class="text-xs uppercase font-semibold opacity-90">Total Dues (Gahak Udhaar) ⚠️</p>
+                        <p class="text-xs uppercase font-semibold opacity-90">Total Dues ⚠️</p>
                         <p id="totalBalanceDisplay" class="text-xl font-bold mt-1">Rs. 0</p>
                     </div>
                     <div class="bg-gradient-to-r from-orange-500 to-orange-600 p-3 rounded-lg shadow text-white cursor-pointer" onclick="filterTable('expense')">
-                        <p class="text-xs uppercase font-semibold opacity-90">Kul Office Kharcha 💸</p>
+                        <p class="text-xs uppercase font-semibold opacity-90">Office Kharcha 💸</p>
                         <p id="totalExpenseDisplay" class="text-xl font-bold mt-1">Rs. 0</p>
                     </div>
                 </div>
 
-                <!-- 🔍 SEARCH BAR ADVANCED -->
-                <div class="bg-white p-3 rounded-lg shadow-md flex items-center space-x-2 border border-blue-200">
-                    <span class="text-gray-500 pl-2">🔍 Search:</span>
-                    <input type="text" id="tableSearchInput" oninput="renderTable()" placeholder="Gahak ka naam, CNIC, ya Tracking ID likhein..." class="w-full p-2 text-sm border rounded focus:outline-blue-500">
+                <!-- 🔍 SEARCH BAR WITH DATE/NAME/CNIC/TRACKING -->
+                <div class="bg-white p-3 rounded-lg shadow-md flex items-center space-x-2 border border-blue-300">
+                    <span class="text-gray-500 pl-2 font-bold text-sm">🔍 Search Box:</span>
+                    <input type="text" id="tableSearchInput" oninput="renderTable()" placeholder="Naam, CNIC, Tracking ID ya Tareekh (DD/MM/YYYY) likhein..." class="w-full p-2 text-sm border rounded focus:outline-blue-500">
                 </div>
 
                 <!-- TABLE -->
                 <div class="bg-white p-5 rounded-lg shadow-md overflow-x-auto">
-                    <div class="flex justify-between items-center mb-4 border-b pb-2">
-                        <h2 class="text-lg font-bold text-gray-700">Records (<span id="tableModeLabel">Sub Data</span>)</h2>
-                        <span class="text-xs bg-blue-100 text-blue-800 px-2 py-1 rounded font-semibold">Live Updates</span>
-                    </div>
                     <table class="w-full text-left border-collapse text-sm">
                         <thead>
                             <tr class="bg-gray-100 text-gray-600 uppercase text-xs">
-                                <th class="p-2 border">Details / Application</th>
-                                <th class="p-2 border">Handler</th>
-                                <th class="p-2 border">Hisaab Kitab</th>
-                                <th class="p-2 border">Verification Lock</th>
-                                <th class="p-2 border text-center">Actions</th>
+                                <th class="p-3 border">👤 Client Info (Click to open details)</th>
+                                <th class="p-3 border text-center" style="width: 120px;">Actions</th>
                             </tr>
                         </thead>
                         <tbody id="dataTable">
@@ -246,6 +235,11 @@
         let cachedDocs = [];
         let unsubscribeSnapshot = null;
 
+        // Set Default Date in Forms to Today
+        const todayStr = new Date().toISOString().split('T')[0];
+        document.getElementById('clientDate').value = todayStr;
+        document.getElementById('expenseDate').value = todayStr;
+
         onAuthStateChanged(auth, (user) => {
             if (user) {
                 document.getElementById('loginScreen').classList.add('hidden');
@@ -254,7 +248,7 @@
                 isCashier = (user.email.toLowerCase() === CASHIER_EMAIL.toLowerCase());
                 const currentName = userNames[user.email.toLowerCase()] || "Unknown User";
                 
-                document.getElementById('lblUserEmail').innerText = (isCashier ? "💰 Cashier: " : "👤 ") + currentName + " (" + user.email + ")";
+                document.getElementById('lblUserEmail').innerText = (isCashier ? "💰 Cashier: " : "👤 ") + currentName;
                 document.getElementById('handler').value = currentName;
                 
                 startRealtimeListener();
@@ -267,20 +261,12 @@
 
         document.getElementById('loginForm').addEventListener('submit', async (e) => {
             e.preventDefault();
-            const btn = document.getElementById('btnLoginSubmit');
-            btn.innerText = "Checking...";
-            btn.disabled = true;
-
             const email = document.getElementById('loginEmail').value.trim();
             const password = document.getElementById('loginPassword').value;
-            
             try {
                 await signInWithEmailAndPassword(auth, email, password);
             } catch (error) {
-                alert("Firebase Error: " + error.message);
-            } finally {
-                btn.innerText = "Sign In / Login";
-                btn.disabled = false;
+                alert("Login Error: " + error.message);
             }
         });
 
@@ -293,60 +279,18 @@
             if(type === 'client') {
                 document.getElementById('clientFields').classList.remove('hidden');
                 document.getElementById('expenseFields').classList.add('hidden');
-                document.getElementById('liveCalcBox').classList.remove('hidden');
                 document.getElementById('tabClient').className = "w-1/2 pb-2 font-bold text-center border-b-2 border-blue-500 text-blue-600";
                 document.getElementById('tabExpense').className = "w-1/2 pb-2 font-bold text-center text-gray-500 hover:text-blue-500";
             } else {
                 document.getElementById('clientFields').classList.add('hidden');
                 document.getElementById('expenseFields').classList.remove('hidden');
-                document.getElementById('liveCalcBox').classList.add('hidden');
                 document.getElementById('tabExpense').className = "w-1/2 pb-2 font-bold text-center border-b-2 border-blue-500 text-blue-600";
                 document.getElementById('tabClient').className = "w-1/2 pb-2 font-bold text-center text-gray-500 hover:text-blue-500";
             }
-            const currentUser = auth.currentUser;
-            if (currentUser) {
-                document.getElementById('handler').value = userNames[currentUser.email.toLowerCase()] || "Unknown User";
-            }
         }
-
-        const totalFeeInput = document.getElementById('totalFee');
-        const paidAmountInput = document.getElementById('paidAmount');
-        const duesAmountInput = document.getElementById('duesAmount');
-        const lblLiveProfit = document.getElementById('lblLiveProfit');
-        const lblStatus = document.getElementById('lblStatus');
-
-        function calculateLiveValues() {
-            const total = parseFloat(totalFeeInput.value) || 0;
-            const paid = parseFloat(paidAmountInput.value) || 0;
-            const dues = parseFloat(duesAmountInput.value) || 0;
-            
-            const expectedProfit = total - paid;
-            lblLiveProfit.innerText = "Rs. " + expectedProfit;
-
-            if (paid === 0) {
-                lblStatus.innerText = "Pending";
-                lblStatus.className = "font-bold text-red-600";
-            } else if (dues > 0) {
-                lblStatus.innerText = "Dues";
-                lblStatus.className = "font-bold text-orange-500";
-            } else if (total > 0 && dues === 0 && paid > 0) {
-                lblStatus.innerText = "Complete";
-                lblStatus.className = "font-bold text-green-600";
-            } else {
-                lblStatus.innerText = "Pending";
-                lblStatus.className = "font-bold text-red-600";
-            }
-        }
-        totalFeeInput.addEventListener('input', calculateLiveValues);
-        paidAmountInput.addEventListener('input', calculateLiveValues);
-        duesAmountInput.addEventListener('input', calculateLiveValues);
 
         window.filterTable = function(filterType) {
             currentFilter = filterType;
-            if(filterType === 'all') document.getElementById('tableModeLabel').innerText = "Sub Data";
-            if(filterType === 'dues') document.getElementById('tableModeLabel').innerText = "Sirf Dues/Udhaar Wale";
-            if(filterType === 'expense') document.getElementById('tableModeLabel').innerText = "Sirf Kharche";
-            if(filterType === 'pending_cash') document.getElementById('tableModeLabel').innerText = "Kacha Cash (Unverified)";
             renderTable();
         }
 
@@ -367,11 +311,12 @@
                 else if (dues > 0) status = "Dues";
                 else if (total > 0 && dues === 0 && paid > 0) status = "Complete";
                 
+                payload.clientDate = document.getElementById('clientDate').value; // Saved Form Date
                 payload.clientName = document.getElementById('clientName').value;
                 payload.cnic = document.getElementById('cnic').value;
                 payload.trackingId = document.getElementById('trackingId').value;
+                payload.mobileNumber = document.getElementById('mobileNumber').value;
                 payload.recordPassword = document.getElementById('recordPassword').value;
-                payload.whatsappNumber = document.getElementById('whatsappNumber').value.trim();
                 payload.applicationType = document.getElementById('applicationType').value;
                 payload.totalFee = total;
                 payload.paidAmount = paid;
@@ -379,12 +324,13 @@
                 payload.status = status;
                 
                 if(!editId) {
-                    payload.cashStatus = "Not Paid"; // Initial State
+                    payload.cashStatus = "Not Paid";
                     payload.operatorHandoverTime = "";
                     payload.cashVerified = false;
                     payload.paidBy = "";
                 }
             } else {
+                payload.expenseDate = document.getElementById('expenseDate').value;
                 payload.expenseDetail = document.getElementById('expenseDetail').value;
                 payload.expenseAmount = parseFloat(document.getElementById('expenseAmount').value) || 0;
             }
@@ -392,12 +338,12 @@
             try {
                 if(editId) {
                     await updateDoc(doc(db, "team_data", editId), payload);
-                    alert("Record Kamyabi se Update ho gaya!");
+                    alert("Update ho gaya!");
                 } else {
-                    payload.createdBy = auth.currentUser ? auth.currentUser.email : "Unknown";
+                    payload.createdBy = auth.currentUser.email;
                     payload.timestamp = new Date();
                     await addDoc(dataCollection, payload);
-                    alert("Naya Record Save ho gaya!");
+                    alert("Save ho gaya!");
                 }
                 cancelEditMode();
             } catch (error) {
@@ -405,29 +351,21 @@
             }
         });
 
-        // 💸 Double Lock Kadam 1: Operator ne cash de diya request baji
         window.operatorHandover = async function(id) {
-            if(confirm("Kya aapne waqai cashier ko is entry ke paise hath mein pakra diye hain?")) {
+            if(confirm("Kya apne cashier ko paise de diye hain?")) {
                 const now = new Date();
-                const formattedTime = now.toLocaleDateString('en-GB') + " @ " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
-                try {
-                    await updateDoc(doc(db, "team_data", id), {
-                        cashStatus: "Handed Over",
-                        operatorHandoverTime: formattedTime
-                    });
-                    alert("Request bhej di gayi hai! Cashier ki tasdeeq ka intezar karein.");
-                } catch(e) {
-                    alert("Error: " + e.message);
-                }
+                const formattedTime = now.toLocaleDateString('en-GB') + " " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+                await updateDoc(doc(db, "team_data", id), {
+                    cashStatus: "Handed Over",
+                    operatorHandoverTime: formattedTime
+                });
             }
         }
 
-        // 💰 Double Lock Kadam 2: Cashier modal kholna approval ke liye
         window.openEndorseModal = function(id) {
             document.getElementById('endorseDocId').value = id;
             document.getElementById('endorseModal').classList.remove('hidden');
         }
-
         window.closeEndorseModal = function() {
             document.getElementById('endorseModal').classList.add('hidden');
         }
@@ -436,29 +374,25 @@
             const id = document.getElementById('endorseDocId').value;
             const selectedPaidBy = document.getElementById('paidBySelect').value;
             const now = new Date();
-            const formattedTime = now.toLocaleDateString('en-GB') + " @ " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
+            const formattedTime = now.toLocaleDateString('en-GB') + " " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
             
-            try {
-                await updateDoc(doc(db, "team_data", id), {
-                    cashVerified: true,
-                    cashStatus: "Verified",
-                    paidBy: selectedPaidBy,
-                    verifiedAtTime: formattedTime
-                });
-                alert("Cash Kamyabi se Lock aur Verify ho gaya!");
-                closeEndorseModal();
-            } catch (error) {
-                alert("Verification mein error: " + error.message);
-            }
+            await updateDoc(doc(db, "team_data", id), {
+                cashVerified: true,
+                cashStatus: "Verified",
+                paidBy: selectedPaidBy,
+                verifiedAtTime: formattedTime
+            });
+            closeEndorseModal();
         }
 
-        // 📱 WhatsApp Trigger Mechanism
-        window.sendWhatsAppMessage = function(name, trackId, pass, phone) {
-            if(!phone) return;
-            let cleanPhone = phone.replace(/\D/g, ''); // Khas sirf digits rkhna
-            let message = `Asalam-o-Alaikum ${name}, aap ki application ka record save ho gaya hai. Tracking ID: ${trackId} ${pass ? `| Password: ${pass}` : ''}. Shukriya! - Team Control Room`;
-            let url = "https://wa.me/" + cleanPhone + "?text=" + encodeURIComponent(message);
-            window.open(url, '_blank');
+        // Toggle Details Panel
+        window.toggleDetailRow = function(id) {
+            const el = document.getElementById("detail-" + id);
+            if(el.classList.contains("hidden")) {
+                el.classList.remove("hidden");
+            } else {
+                el.classList.add("hidden");
+            }
         }
 
         function startRealtimeListener() {
@@ -485,24 +419,32 @@
                 const data = item.data;
                 const id = item.id;
                 
-                // 🔍 LIVE SEARCH ALGORITHM
-                if (searchVal && data.type !== 'expense') {
+                // Formatted Dates for Searching
+                let rawDate = data.clientDate || data.expenseDate || "";
+                let displayDate = "";
+                if(rawDate) {
+                    const parts = rawDate.split("-");
+                    if(parts.length === 3) displayDate = `${parts[2]}/${parts[1]}/${parts[0]}`; // DD/MM/YYYY
+                }
+
+                // 🔍 LIVE SEARCH ALGORITHM (NAME, CNIC, TRACKING, DATE)
+                if (searchVal) {
                     const cName = (data.clientName || "").toLowerCase();
                     const cnicNo = (data.cnic || "").toLowerCase();
                     const tId = (data.trackingId || "").toLowerCase();
-                    if (!cName.includes(searchVal) && !cnicNo.includes(searchVal) && !tId.includes(searchVal)) {
-                        return; // Agar match na ho toh chhor do
+                    const expDet = (data.expenseDetail || "").toLowerCase();
+                    const dStr = displayDate.toLowerCase();
+                    
+                    if (!cName.includes(searchVal) && !cnicNo.includes(searchVal) && !tId.includes(searchVal) && !dStr.includes(searchVal) && !expDet.includes(searchVal)) {
+                        return;
                     }
                 }
 
                 let singleProfit = 0;
                 if(data.type !== 'expense') {
                     singleProfit = (data.totalFee - data.duesAmount) - data.paidAmount;
-                    if(data.cashVerified === true) {
-                        totalVerifiedProfit += singleProfit;
-                    } else {
-                        totalPendingCash += singleProfit;
-                    }
+                    if(data.cashVerified === true) totalVerifiedProfit += singleProfit;
+                    else totalPendingCash += singleProfit;
                     grandTotalDues += parseFloat(data.duesAmount) || 0;
                 } else {
                     totalOfficeExpenses += parseFloat(data.expenseAmount) || 0;
@@ -512,97 +454,97 @@
                 if(currentFilter === 'expense' && data.type !== 'expense') return;
                 if(currentFilter === 'pending_cash' && (data.type === 'expense' || data.cashVerified === true)) return;
 
-                const tr = document.createElement('tr');
-                
+                // 💸 KHARCHA ROW DISPLAY
                 if(data.type === 'expense') {
+                    const tr = document.createElement('tr');
                     tr.className = "border-b bg-red-50 hover:bg-red-100";
                     tr.innerHTML = `
-                        <td class="p-2 border"><div class="font-bold text-red-800">💸 KHARCHA: ${data.expenseDetail}</div></td>
-                        <td class="p-2 border text-gray-700">${data.handler}</td>
-                        <td class="p-2 border text-red-600 font-bold" colspan="2">Out: Rs. ${data.expenseAmount}</td>
-                        <td class="p-2 border text-center space-x-1">
+                        <td class="p-3 border font-semibold text-red-800">
+                            📅 [${displayDate}] 💸 KHARCHA: ${data.expenseDetail} (Rs. ${data.expenseAmount}) | Handler: ${data.handler}
+                        </td>
+                        <td class="p-3 border text-center space-x-1">
                             <button onclick="editRecord('${id}')" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600">Edit</button>
                             <button onclick="deleteRecord('${id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Delete</button>
                         </td>
                     `;
-                } else {
-                    let statusBadgeColor = "bg-red-100 text-red-800"; 
-                    if(data.status === 'Complete') statusBadgeColor = "bg-green-100 text-green-800";
-                    if(data.status === 'Dues') statusBadgeColor = "bg-yellow-100 text-yellow-800";
-
-                    // 🛠️ Double-Lock Logic Visualization HTML Template
-                    let lockStatusHTML = "";
-                    if(data.cashStatus === "Verified" || data.cashVerified === true) {
-                        lockStatusHTML = `
-                            <div class="text-xs text-green-700 font-bold">✅ Approved by Cashier</div>
-                            <div class="text-[10px] text-gray-500 font-semibold">Time: ${data.verifiedAtTime || 'Verified'}</div>
-                            <div class="text-[10px] text-purple-700 font-bold">Paid By: <span class="uppercase">${data.paidBy || 'N/A'}</span></div>
-                        `;
-                    } else if(data.cashStatus === "Handed Over") {
-                        if(isCashier) {
-                            lockStatusHTML = `
-                                <div class="text-[11px] text-amber-700 font-semibold mb-1 animate-pulse">⏳ Sent: ${data.operatorHandoverTime}</div>
-                                <button onclick="openEndorseModal('${id}')" class="bg-amber-500 text-white px-2 py-1 rounded text-xs font-bold hover:bg-amber-600 shadow transition">
-                                    💰 Approve Cash
-                                </button>
-                            `;
-                        } else {
-                            lockStatusHTML = `
-                                <div class="text-xs text-amber-600 font-bold italic animate-pulse">⏳ Awaiting Approval...</div>
-                                <div class="text-[10px] text-gray-500">Sent at: ${data.operatorHandoverTime}</div>
-                            `;
-                        }
-                    } else {
-                        // Not Paid yet or new entry state
-                        if(isCashier) {
-                            lockStatusHTML = `<span class="text-xs text-gray-400 italic">Operator hasn't sent cash yet</span>`;
-                        } else {
-                            lockStatusHTML = `
-                                <button onclick="operatorHandover('${id}')" class="bg-blue-500 text-white px-2 py-1 rounded text-xs font-bold hover:bg-blue-600 shadow transition">
-                                    💸 Hand over Cash
-                                </button>
-                            `;
-                        }
-                    }
-
-                    // 📱 Optional WhatsApp Button Template
-                    let whatsappBtnHTML = "";
-                    if(data.whatsappNumber) {
-                        whatsappBtnHTML = `
-                            <button onclick="sendWhatsAppMessage('${data.clientName}','${data.trackingId}','${data.recordPassword}','${data.whatsappNumber}')" class="bg-green-600 text-white px-1.5 py-0.5 rounded text-[11px] font-bold hover:bg-green-700 inline-flex items-center space-x-1 mt-1">
-                                <span>💬 Send WA</span>
-                            </button>
-                        `;
-                    }
-
-                    tr.className = "border-b hover:bg-gray-50";
-                    tr.innerHTML = `
-                        <td class="p-2 border">
-                            <div class="font-bold text-gray-800">👤 ${data.clientName || 'N/A'}</div>
-                            <div class="text-xs bg-purple-100 text-purple-800 font-semibold inline-block px-1.5 py-0.5 rounded my-0.5">📂 Job: ${data.applicationType || 'Not Set'}</div>
-                            <div class="text-xs text-gray-500">CNIC: ${data.cnic || ''} | Track: ${data.trackingId || ''}</div>
-                            ${data.recordPassword ? `<div class="text-xs text-purple-700 font-bold">🔑 Key/Pass: ${data.recordPassword}</div>` : ''}
-                            ${whatsappBtnHTML}
-                        </td>
-                        <td class="p-2 border text-gray-700 font-medium">${data.handler}</td>
-                        <td class="p-2 border">
-                            <div class="text-xs text-gray-600">Total Fee: Rs. ${data.totalFee}</div>
-                            <div class="text-xs text-blue-600 font-bold">Paid Out: Rs. ${data.paidAmount}</div>
-                            <div class="text-xs text-red-600 font-bold">Gahak Dues: Rs. ${data.duesAmount}</div>
-                            <div class="text-xs text-green-700 font-bold border-t mt-1 pt-0.5">Net Profit: Rs. ${singleProfit}</div>
-                        </td>
-                        <td class="p-2 border">${lockStatusHTML}</td>
-                        <td class="p-2 border text-center space-x-1">
-                            <button onclick="editRecord('${id}')" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600">Edit</button>
-                            <button onclick="deleteRecord('${id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Delete</button>
-                        </td>
-                    `;
+                    dataTable.appendChild(tr);
+                    return;
                 }
-                dataTable.appendChild(tr);
+
+                // 🛠️ Lock Logic Status Panel
+                let lockStatusHTML = "";
+                if(data.cashStatus === "Verified" || data.cashVerified === true) {
+                    lockStatusHTML = `<span class="text-green-700 font-bold">✅ Approved (Paid By: ${data.paidBy}) [${data.verifiedAtTime}]</span>`;
+                } else if(data.cashStatus === "Handed Over") {
+                    if(isCashier) {
+                        lockStatusHTML = `
+                            <div class="inline-block bg-amber-100 p-1.5 rounded border border-amber-300">
+                                <span class="text-amber-800 text-xs block font-bold mb-1">⏳ Sent: ${data.operatorHandoverTime}</span>
+                                <button onclick="openEndorseModal('${id}')" class="bg-amber-500 text-white px-2 py-0.5 rounded text-xs font-bold hover:bg-amber-600">Approve Cash</button>
+                            </div>
+                        `;
+                    } else {
+                        lockStatusHTML = `<span class="text-amber-600 font-bold italic animate-pulse">⏳ Awaiting Cashier Approval... (Sent: ${data.operatorHandoverTime})</span>`;
+                    }
+                } else {
+                    if(isCashier) {
+                        lockStatusHTML = `<span class="text-gray-400 italic">Operator hasn't sent cash yet</span>`;
+                    } else {
+                        lockStatusHTML = `<button onclick="operatorHandover('${id}')" class="bg-blue-500 text-white px-2 py-0.5 rounded text-xs font-bold hover:bg-blue-600">💸 Hand over Cash</button>`;
+                    }
+                }
+
+                // Main Client Row Element
+                const trMain = document.createElement('tr');
+                trMain.className = "border-b hover:bg-blue-50 cursor-pointer transition";
+                trMain.innerHTML = `
+                    <td class="p-3 border" onclick="toggleDetailRow('${id}')">
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <span class="font-bold text-blue-700 text-base">👤 ${data.clientName || 'N/A'}</span>
+                                <span class="text-xs bg-gray-200 text-gray-800 px-2 py-0.5 rounded ml-2 font-semibold">📅 ${displayDate}</span>
+                            </div>
+                            <span class="text-xs text-gray-400">Click to open details 👇</span>
+                        </div>
+                        <div class="text-xs text-gray-600 mt-1">
+                            <span class="font-semibold">Tracking ID:</span> ${data.trackingId || 'N/A'} | <span class="font-semibold">CNIC:</span> ${data.cnic || 'N/A'}
+                        </div>
+                    </td>
+                    <td class="p-3 border text-center space-x-1 vertical-align-middle">
+                        <button onclick="editRecord('${id}')" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600">Edit</button>
+                        <button onclick="deleteRecord('${id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Delete</button>
+                    </td>
+                `;
+
+                // Hidden Detail Row Element
+                const trDetail = document.createElement('tr');
+                trDetail.id = "detail-" + id;
+                trDetail.className = "hidden bg-gray-50 border-b";
+                trDetail.innerHTML = `
+                    <td colspan="2" class="p-4 border">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
+                            <div class="space-y-1">
+                                <p><strong>📂 Job/Maqsad:</strong> ${data.applicationType || 'N/A'}</p>
+                                <p><strong>📞 Mobile Number:</strong> ${data.mobileNumber || 'N/A'}</p>
+                                <p><strong>🔑 Key/Password:</strong> <span class="text-purple-700 font-bold">${data.recordPassword || 'None'}</span></p>
+                                <p><strong>👤 Handler (Entry By):</strong> ${data.handler}</p>
+                            </div>
+                            <div class="space-y-1 bg-white p-3 rounded shadow-sm border">
+                                <p class="text-gray-600">Total Fee: <span class="font-bold">Rs. ${data.totalFee}</span></p>
+                                <p class="text-blue-600">Paid Out: <span class="font-bold">Rs. ${data.paidAmount}</span></p>
+                                <p class="text-red-600">Gahak Dues: <span class="font-bold">Rs. ${data.duesAmount}</span></p>
+                                <p class="text-green-700 border-t pt-1 font-bold">Net Profit: Rs. ${singleProfit}</p>
+                                <div class="mt-2 pt-2 border-t">${lockStatusHTML}</div>
+                            </div>
+                        </div>
+                    </td>
+                `;
+
+                dataTable.appendChild(trMain);
+                dataTable.appendChild(trDetail);
             });
             
             let netVerifiedProfit = totalVerifiedProfit - totalOfficeExpenses;
-            
             document.getElementById('totalProfitDisplay').innerText = "Rs. " + netVerifiedProfit;
             document.getElementById('totalPendingCashDisplay').innerText = "Rs. " + totalPendingCash;
             document.getElementById('totalExpenseDisplay').innerText = "Rs. " + totalOfficeExpenses;
@@ -619,17 +561,18 @@
             switchTab(data.type);
 
             if(data.type === 'client') {
+                document.getElementById('clientDate').value = data.clientDate || todayStr;
                 document.getElementById('clientName').value = data.clientName || '';
                 document.getElementById('cnic').value = data.cnic || '';
                 document.getElementById('trackingId').value = data.trackingId || '';
+                document.getElementById('mobileNumber').value = data.mobileNumber || '';
                 document.getElementById('recordPassword').value = data.recordPassword || '';
-                document.getElementById('whatsappNumber').value = data.whatsappNumber || '';
                 document.getElementById('applicationType').value = data.applicationType || '';
                 document.getElementById('totalFee').value = data.totalFee || 0;
                 document.getElementById('paidAmount').value = data.paidAmount || 0;
                 document.getElementById('duesAmount').value = data.duesAmount || 0;
-                calculateLiveValues();
             } else {
+                document.getElementById('expenseDate').value = data.expenseDate || todayStr;
                 document.getElementById('expenseDetail').value = data.expenseDetail || '';
                 document.getElementById('expenseAmount').value = data.expenseAmount || 0;
             }
@@ -645,8 +588,9 @@
             document.getElementById('btnSubmit').innerText = "Data Save Karein";
             document.getElementById('btnSubmit').className = "w-full bg-green-600 text-white p-2 rounded font-bold hover:bg-green-700 transition";
             document.getElementById('btnCancelEdit').classList.add('hidden');
+            document.getElementById('clientDate').value = todayStr;
+            document.getElementById('expenseDate').value = todayStr;
             switchTab('client');
-            calculateLiveValues();
         }
 
         window.deleteRecord = async (id) => {
