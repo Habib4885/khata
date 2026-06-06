@@ -2,27 +2,47 @@
 <html lang="ur">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Team Khata Control Room - Clean UI Edition</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Team Khata App</title>
+    
+    <!-- PWA Mobile App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#2563eb">
+    
+    <!-- App Icons (Chrome ka icon hata kar yeh wala layega) -->
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2691/2691522.png">
+    <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2691/2691522.png">
+
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        /* Mobile Touch Optimizations */
+        body { -webkit-tap-highlight-color: transparent; }
+        .custom-scroll::-webkit-scrollbar { display: none; }
+    </style>
 </head>
-<body class="bg-gray-100 font-sans min-h-screen">
+<body class="bg-gray-50 font-sans min-h-screen text-gray-800">
 
     <!-- LOGIN SCREEN CONTAINER -->
-    <div id="loginScreen" class="flex items-center justify-center min-h-screen bg-gray-200">
-        <div class="bg-white p-8 rounded-lg shadow-md w-full max-w-md">
-            <h2 class="text-2xl font-bold text-center text-blue-600 mb-6">👤 Team Control Room Login</h2>
+    <div id="loginScreen" class="flex items-center justify-center min-h-screen bg-gray-100 p-4">
+        <div class="bg-white p-6 rounded-2xl shadow-xl w-full max-w-sm border border-gray-100">
+            <div class="text-center mb-6">
+                <div class="bg-blue-100 w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-3 text-blue-600 text-3xl">👤</div>
+                <h2 class="text-xl font-black text-gray-800 tracking-wide">Team Control Room</h2>
+                <p class="text-xs text-gray-400 mt-1">Apna account login karein</p>
+            </div>
             <form id="loginForm" class="space-y-4">
                 <div>
-                    <label class="block text-sm font-semibold text-gray-600">Email Address</label>
-                    <input type="email" id="loginEmail" required class="w-full p-2.5 border rounded mt-1 focus:outline-blue-500" placeholder="operator@team.com">
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider">Email Address</label>
+                    <input type="email" id="loginEmail" required class="w-full p-3 border border-gray-200 rounded-xl mt-1 focus:outline-none focus:border-blue-500 text-sm" placeholder="operator@team.com">
                 </div>
                 <div>
-                    <label class="block text-sm font-semibold text-gray-600">Password</label>
-                    <input type="password" id="loginPassword" required class="w-full p-2.5 border rounded mt-1 focus:outline-blue-500" placeholder="••••••••">
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider">Password</label>
+                    <input type="password" id="loginPassword" required class="w-full p-3 border border-gray-200 rounded-xl mt-1 focus:outline-none focus:border-blue-500 text-sm" placeholder="••••••••">
                 </div>
-                <button type="submit" id="btnLoginSubmit" class="w-full bg-blue-600 text-white p-2.5 rounded font-bold hover:bg-blue-700 transition">
+                <button type="submit" id="btnLoginSubmit" class="w-full bg-blue-600 text-white p-3 rounded-xl font-bold hover:bg-blue-700 active:scale-[0.98] transition text-sm shadow-md shadow-blue-100">
                     Sign In / Login
                 </button>
             </form>
@@ -30,178 +50,183 @@
     </div>
 
     <!-- MAIN KHATA INTERFACE -->
-    <div id="mainInterface" class="hidden">
+    <div id="mainInterface" class="hidden pb-12">
         <!-- Header -->
-        <header class="bg-blue-600 text-white p-4 shadow-md flex justify-between items-center">
-            <span class="text-xl font-bold tracking-wider">🚀 TEAM KHATA CONTROL ROOM</span>
-            <div class="flex items-center space-x-4">
-                <span id="lblUserEmail" class="text-sm bg-blue-700 px-3 py-1 rounded font-semibold"></span>
-                <button id="btnLogout" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded text-sm font-bold transition">Logout</button>
+        <header class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-40 flex justify-between items-center">
+            <span class="text-base font-black tracking-wide">🚀 TEAM KHATA APP</span>
+            <div class="flex items-center space-x-2">
+                <span id="lblUserEmail" class="text-xs bg-blue-700 px-2.5 py-1 rounded-lg font-bold"></span>
+                <button id="btnLogout" class="bg-red-500 text-white px-2 py-1 rounded-lg text-xs font-bold active:scale-95 transition">Logout</button>
             </div>
         </header>
 
-        <!-- CASH ENDORSEMENT MODAL (POPUP FOR CASHIER ONLY) -->
-        <div id="endorseModal" class="fixed inset-0 bg-black bg-opacity-50 hidden flex items-center justify-center z-50 p-4">
-            <div class="bg-white p-6 rounded-lg shadow-xl w-full max-w-md">
-                <h3 class="text-lg font-bold text-gray-800 mb-4">💰 Cash Endorsement / Tasdeeq</h3>
-                <p class="text-sm text-gray-600 mb-4">Meharbani karke select karein ke paise kis bande ne jama karwaye hain:</p>
+        <!-- CASH ENDORSEMENT MODAL -->
+        <div id="endorseModal" class="fixed inset-0 bg-black/60 hidden flex items-center justify-center z-50 p-4 backdrop-blur-xs">
+            <div class="bg-white p-5 rounded-2xl shadow-xl w-full max-w-sm animate-zoomIn">
+                <h3 class="text-base font-black text-gray-800 mb-2">💰 Cash Endorsement</h3>
+                <p class="text-xs text-gray-500 mb-4">Meharbani karke tasdeeq karein ke paise kis bande ne jama karwaye hain:</p>
                 <input type="hidden" id="endorseDocId">
                 <div class="mb-4">
-                    <label class="block text-sm font-semibold text-gray-700 mb-1">Paid By (Paise Kisne Diye?)</label>
-                    <select id="paidBySelect" class="w-full p-2.5 border rounded focus:outline-blue-500 font-medium">
+                    <label class="block text-xs font-bold text-gray-600 mb-1">Paid By (Paise Kisne Diye?)</label>
+                    <select id="paidBySelect" class="w-full p-3 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-500 font-bold text-sm bg-gray-50">
                         <option value="mustafa">mustafa</option>
                         <option value="Shazad">Shazad</option>
                         <option value="Habib">Habib</option>
                         <option value="Hamza">Hamza</option>
                     </select>
                 </div>
-                <div class="flex space-x-2 justify-end">
-                    <button onclick="closeEndorseModal()" class="bg-gray-300 hover:bg-gray-400 text-gray-800 px-4 py-2 rounded font-semibold text-sm">Cancel</button>
-                    <button onclick="submitEndorsement()" class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded font-semibold text-sm">Verify & Receive Cash</button>
+                <div class="flex space-x-2 justify-end text-xs">
+                    <button onclick="closeEndorseModal()" class="bg-gray-100 hover:bg-gray-200 text-gray-600 px-4 py-2.5 rounded-xl font-bold">Cancel</button>
+                    <button onclick="submitEndorsement()" class="bg-green-600 text-white px-4 py-2.5 rounded-xl font-bold active:scale-95 transition">Verify & Lock Cash</button>
                 </div>
             </div>
         </div>
 
-        <div class="max-w-7xl mx-auto p-4 grid grid-cols-1 md:grid-cols-3 gap-6">
+        <!-- MAIN CONTAINER -->
+        <div class="max-w-md mx-auto p-3 space-y-4">
             
-            <!-- DATA ENTRY & UPDATE FORM -->
-            <div class="bg-white p-5 rounded-lg shadow-md md:col-span-1 h-fit">
-                <div class="flex mb-4 border-b">
-                    <button id="tabClient" onclick="switchTab('client')" class="w-1/2 pb-2 font-bold text-center border-b-2 border-blue-500 text-blue-600">👤 Client Form</button>
-                    <button id="tabExpense" onclick="switchTab('expense')" class="w-1/2 pb-2 font-bold text-center text-gray-500 hover:text-blue-500">💸 Naya Kharcha</button>
+            <!-- SUMMARY WIDGETS (HORIZONTAL SCROLL ON MOBILE) -->
+            <div class="flex space-x-2 overflow-x-auto pb-1 custom-scroll snap-x">
+                <div class="bg-white border border-gray-100 p-3 rounded-xl shadow-xs min-w-[125px] flex-1 snap-start cursor-pointer" onclick="filterTable('all')">
+                    <p class="text-[10px] uppercase font-bold text-gray-400">Verified Profit</p>
+                    <p id="totalProfitDisplay" class="text-sm font-black text-green-600 mt-0.5">Rs. 0</p>
+                </div>
+                <div class="bg-white border border-gray-100 p-3 rounded-xl shadow-xs min-w-[125px] flex-1 snap-start cursor-pointer" onclick="filterTable('pending_cash')">
+                    <p class="text-[10px] uppercase font-bold text-gray-400">Kacha Cash</p>
+                    <p id="totalPendingCashDisplay" class="text-sm font-black text-amber-500 mt-0.5">Rs. 0</p>
+                </div>
+                <div class="bg-white border border-gray-100 p-3 rounded-xl shadow-xs min-w-[125px] flex-1 snap-start cursor-pointer" onclick="filterTable('dues')">
+                    <p class="text-[10px] uppercase font-bold text-gray-400">Total Dues</p>
+                    <p id="totalBalanceDisplay" class="text-sm font-black text-red-500 mt-0.5">Rs. 0</p>
+                </div>
+                <div class="bg-white border border-gray-100 p-3 rounded-xl shadow-xs min-w-[125px] flex-1 snap-start cursor-pointer" onclick="filterTable('expense')">
+                    <p class="text-[10px] uppercase font-bold text-gray-400">Expenses</p>
+                    <p id="totalExpenseDisplay" class="text-sm font-black text-gray-700 mt-0.5">Rs. 0</p>
+                </div>
+            </div>
+
+            <!-- FORM CARD -->
+            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
+                <div class="flex mb-4 bg-gray-50 p-1 rounded-xl border">
+                    <button id="tabClient" onclick="switchTab('client')" class="w-1/2 py-2 text-xs font-black text-center rounded-lg bg-white text-blue-600 shadow-xs transition">👤 Client Form</button>
+                    <button id="tabExpense" onclick="switchTab('expense')" class="w-1/2 py-2 text-xs font-bold text-center rounded-lg text-gray-500 transition">💸 Kharcha</button>
                 </div>
 
-                <form id="khataForm" class="space-y-3">
+                <form id="khataForm" class="space-y-3 text-xs">
                     <input type="hidden" id="formType" value="client">
                     <input type="hidden" id="editDocId" value="">
 
                     <!-- Client Fields -->
                     <div id="clientFields" class="space-y-3">
-                        <!-- 📅 CALENDAR FIELD -->
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="font-bold text-gray-500">Tareekh / Date</label>
+                                <input type="date" id="clientDate" required class="w-full p-2.5 border border-gray-200 bg-gray-50 rounded-xl mt-1 font-bold focus:outline-none focus:border-blue-500">
+                            </div>
+                            <div>
+                                <label class="font-bold text-gray-500">Gahak ka Naam</label>
+                                <input type="text" id="clientName" required class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none focus:border-blue-500">
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="font-bold text-gray-500">ID Card (CNIC)</label>
+                                <input type="text" id="cnic" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none focus:border-blue-500" placeholder="Optional">
+                            </div>
+                            <div>
+                                <label class="font-bold text-gray-500">Tracking ID</label>
+                                <input type="text" id="trackingId" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none focus:border-blue-500" placeholder="Optional">
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2">
+                            <div>
+                                <label class="font-bold text-gray-500">Mobile Number</label>
+                                <input type="text" id="mobileNumber" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none focus:border-blue-500" placeholder="03001234567">
+                            </div>
+                            <div>
+                                <label class="font-bold text-purple-700">Password / Key</label>
+                                <input type="text" id="recordPassword" class="w-full p-2.5 border border-purple-200 rounded-xl mt-1 focus:outline-none focus:border-purple-500" placeholder="Optional Password">
+                            </div>
+                        </div>
+
                         <div>
-                            <label class="block text-sm font-semibold text-blue-700">Tareekh / Date</label>
-                            <input type="date" id="clientDate" required class="w-full p-2 border border-blue-300 rounded focus:outline-blue-500 font-bold text-gray-700">
+                            <label class="font-bold text-purple-700">Application / Maqsad</label>
+                            <input type="text" id="applicationType" class="w-full p-2.5 border border-purple-200 rounded-xl mt-1 focus:outline-none focus:border-purple-500 font-semibold" placeholder="e.g. Passport, Online Form">
                         </div>
-                        <div>
-                            <label class="block text-sm text-gray-600">Gahak ka Naam</label>
-                            <input type="text" id="clientName" required class="w-full p-2 border rounded focus:outline-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm text-gray-600">ID Card (CNIC)</label>
-                            <input type="text" id="cnic" class="w-full p-2 border rounded focus:outline-blue-500">
-                        </div>
-                        <div>
-                            <label class="block text-sm text-gray-600">Tracking ID</label>
-                            <input type="text" id="trackingId" class="w-full p-2 border rounded focus:outline-blue-500">
-                        </div>
-                        <!-- 📞 MOBILE NUMBER FIELD -->
-                        <div>
-                            <label class="block text-sm text-gray-600">Mobile Number</label>
-                            <input type="text" id="mobileNumber" class="w-full p-2 border rounded focus:outline-blue-500" placeholder="e.g. 03001234567">
-                        </div>
-                        <div>
-                            <label class="block text-sm text-gray-600 font-semibold text-purple-700">Password / Key</label>
-                            <input type="text" id="recordPassword" class="w-full p-2 border border-purple-200 rounded focus:outline-purple-500" placeholder="Optional Password">
-                        </div>
-                        <div class="bg-purple-50 p-2 rounded border border-purple-200">
-                            <label class="block text-sm font-bold text-purple-700">Application / Maqsad</label>
-                            <input type="text" id="applicationType" class="w-full p-2 border rounded focus:outline-purple-500 font-semibold" placeholder="e.g. Passport, Online Form">
-                        </div>
-                        <div class="bg-blue-50 p-2 rounded border border-blue-200">
-                            <label class="block text-sm font-bold text-blue-700">Total Fee (Rs.)</label>
-                            <input type="number" id="totalFee" class="w-full p-2 border rounded focus:outline-blue-500 font-bold" value="0">
-                        </div>
-                        <div class="bg-green-50 p-2 rounded border border-green-200">
-                            <label class="block text-sm font-bold text-green-700">Paid Amount (Rs.) <span class="text-xs font-normal">(Jo Aage Di)</span></label>
-                            <input type="number" id="paidAmount" class="w-full p-2 border rounded focus:outline-green-500 font-bold" value="0">
-                        </div>
-                        <div class="bg-red-50 p-2 rounded border border-red-200">
-                            <label class="block text-sm font-bold text-red-700">Dues / Udhaar (Rs.)</label>
-                            <input type="number" id="duesAmount" class="w-full p-2 border rounded focus:outline-red-500 font-bold text-red-700" value="0">
+
+                        <div class="grid grid-cols-3 gap-1.5 bg-gray-50 p-2.5 rounded-xl border border-dashed">
+                            <div>
+                                <label class="font-bold text-blue-600 block text-[10px]">Total Fee</label>
+                                <input type="number" id="totalFee" class="w-full p-1.5 border rounded-lg mt-0.5 text-center font-bold text-sm focus:outline-none" value="0">
+                            </div>
+                            <div>
+                                <label class="font-bold text-green-600 block text-[10px]">Paid Amt</label>
+                                <input type="number" id="paidAmount" class="w-full p-1.5 border rounded-lg mt-0.5 text-center font-bold text-sm focus:outline-none" value="0">
+                            </div>
+                            <div>
+                                <label class="font-bold text-red-500 block text-[10px]">Gahak Dues</label>
+                                <input type="number" id="duesAmount" class="w-full p-1.5 border rounded-lg mt-0.5 text-center font-bold text-sm text-red-600 focus:outline-none" value="0">
+                            </div>
                         </div>
                     </div>
 
                     <!-- Expense Fields -->
                     <div id="expenseFields" class="space-y-3 hidden">
                         <div>
-                            <label class="block text-sm font-semibold text-blue-700">Kharche ki Tareekh</label>
-                            <input type="date" id="expenseDate" class="w-full p-2 border border-blue-300 rounded focus:outline-blue-500 font-bold text-gray-700">
+                            <label class="font-bold text-gray-500">Kharche ki Tareekh</label>
+                            <input type="date" id="expenseDate" class="w-full p-2.5 border border-gray-200 bg-gray-50 rounded-xl mt-1 font-bold">
                         </div>
                         <div>
-                            <label class="block text-sm text-gray-600">Kharche ki Tafseel</label>
-                            <input type="text" id="expenseDetail" class="w-full p-2 border rounded focus:outline-blue-500" placeholder="Chai, Bill waghera">
+                            <label class="font-bold text-gray-500">Kharche ki Tafseel</label>
+                            <input type="text" id="expenseDetail" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1" placeholder="Chai, Bill, Internet waghera">
                         </div>
                         <div>
-                            <label class="block text-sm text-gray-600">Kharche ki Raqam (Rs.)</label>
-                            <input type="number" id="expenseAmount" class="w-full p-2 border rounded focus:outline-blue-500" value="0">
+                            <label class="font-bold text-gray-500">Kharche ki Raqam (Rs.)</label>
+                            <input type="number" id="expenseAmount" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1" value="0">
                         </div>
                     </div>
 
-                    <!-- Common Field - AUTOMATIC -->
-                    <div>
-                        <label class="block text-sm font-semibold text-gray-700">Entry Kisne Ki? (Auto)</label>
-                        <input type="text" id="handler" required class="w-full p-2 border rounded bg-gray-100 font-bold text-gray-700 cursor-not-allowed" readonly>
+                    <!-- Common Field Locked -->
+                    <div class="flex items-center justify-between bg-gray-100 px-3 py-2 rounded-xl text-[11px]">
+                        <span class="font-bold text-gray-500">Operator:</span>
+                        <input type="text" id="handler" required class="bg-transparent text-right font-black text-gray-700 outline-none cursor-not-allowed" readonly>
                     </div>
                     
-                    <button type="submit" id="btnSubmit" class="w-full bg-green-600 text-white p-2 rounded font-bold hover:bg-green-700 transition">
-                        Data Save Karein
-                    </button>
-                    <button type="button" id="btnCancelEdit" onclick="cancelEditMode()" class="w-full bg-gray-400 text-white p-2 rounded font-bold hover:bg-gray-500 transition hidden">
-                        Cancel Edit
-                    </button>
+                    <div class="flex space-x-2 pt-1">
+                        <button type="submit" id="btnSubmit" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-black shadow-xs active:scale-95 transition text-xs">
+                            Data Save Karein
+                        </button>
+                        <button type="button" id="btnCancelEdit" onclick="cancelEditMode()" class="bg-gray-400 text-white p-3 rounded-xl font-bold active:scale-95 transition hidden">
+                            Cancel
+                        </button>
+                    </div>
                 </form>
             </div>
 
-            <!-- DATA DISPLAY TABLE & TOTALS -->
-            <div class="md:col-span-2 space-y-4">
+            <!-- 🔍 MOBILE SEARCH BAR -->
+            <div class="bg-white p-3 rounded-2xl shadow-xs border border-blue-200 flex items-center space-x-2 text-xs">
+                <span class="text-blue-600 font-bold">🔍 Search:</span>
+                <input type="text" id="tableSearchInput" oninput="renderTable()" placeholder="Naam, CNIC, ID ya Date (DD/MM/YYYY)..." class="w-full p-2 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-400">
+            </div>
+
+            <!-- STREAMLINED CELL LIST (NO OVERFLOW TABLES) -->
+            <div class="space-y-2">
+                <div class="flex justify-between items-center px-1">
+                    <h2 class="text-xs font-black text-gray-500 uppercase tracking-wider">Khata Records List</h2>
+                    <span class="text-[10px] bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded-full">Live Live</span>
+                </div>
                 
-                <!-- SUMMARY BOXES -->
-                <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 md:gap-4">
-                    <div class="bg-gradient-to-r from-green-600 to-green-700 p-3 rounded-lg shadow text-white cursor-pointer" onclick="filterTable('all')">
-                        <p class="text-xs uppercase font-semibold opacity-90">Verified Profit 💰</p>
-                        <p id="totalProfitDisplay" class="text-xl font-bold mt-1">Rs. 0</p>
-                    </div>
-                    <div class="bg-gradient-to-r from-yellow-500 to-yellow-600 p-3 rounded-lg shadow text-white cursor-pointer" onclick="filterTable('pending_cash')">
-                        <p class="text-xs uppercase font-semibold opacity-90">Kacha Cash ⏳</p>
-                        <p id="totalPendingCashDisplay" class="text-xl font-bold mt-1">Rs. 0</p>
-                    </div>
-                    <div class="bg-gradient-to-r from-red-500 to-red-600 p-3 rounded-lg shadow text-white cursor-pointer" onclick="filterTable('dues')">
-                        <p class="text-xs uppercase font-semibold opacity-90">Total Dues ⚠️</p>
-                        <p id="totalBalanceDisplay" class="text-xl font-bold mt-1">Rs. 0</p>
-                    </div>
-                    <div class="bg-gradient-to-r from-orange-500 to-orange-600 p-3 rounded-lg shadow text-white cursor-pointer" onclick="filterTable('expense')">
-                        <p class="text-xs uppercase font-semibold opacity-90">Office Kharcha 💸</p>
-                        <p id="totalExpenseDisplay" class="text-xl font-bold mt-1">Rs. 0</p>
-                    </div>
+                <div id="dataTable" class="space-y-2">
+                    <!-- Cards will be injected smoothly here via JS -->
                 </div>
-
-                <!-- 🔍 SEARCH BAR WITH DATE/NAME/CNIC/TRACKING -->
-                <div class="bg-white p-3 rounded-lg shadow-md flex items-center space-x-2 border border-blue-300">
-                    <span class="text-gray-500 pl-2 font-bold text-sm">🔍 Search Box:</span>
-                    <input type="text" id="tableSearchInput" oninput="renderTable()" placeholder="Naam, CNIC, Tracking ID ya Tareekh (DD/MM/YYYY) likhein..." class="w-full p-2 text-sm border rounded focus:outline-blue-500">
-                </div>
-
-                <!-- TABLE -->
-                <div class="bg-white p-5 rounded-lg shadow-md overflow-x-auto">
-                    <table class="w-full text-left border-collapse text-sm">
-                        <thead>
-                            <tr class="bg-gray-100 text-gray-600 uppercase text-xs">
-                                <th class="p-3 border">👤 Client Info (Click to open details)</th>
-                                <th class="p-3 border text-center" style="width: 120px;">Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody id="dataTable">
-                            <!-- Data automatic load hoga -->
-                        </tbody>
-                    </table>
-                </div>
-
             </div>
 
         </div>
     </div>
 
-    <!-- Firebase Code -->
+    <!-- Firebase SDK Imports -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -235,7 +260,6 @@
         let cachedDocs = [];
         let unsubscribeSnapshot = null;
 
-        // Set Default Date in Forms to Today
         const todayStr = new Date().toISOString().split('T')[0];
         document.getElementById('clientDate').value = todayStr;
         document.getElementById('expenseDate').value = todayStr;
@@ -244,13 +268,10 @@
             if (user) {
                 document.getElementById('loginScreen').classList.add('hidden');
                 document.getElementById('mainInterface').classList.remove('hidden');
-                
                 isCashier = (user.email.toLowerCase() === CASHIER_EMAIL.toLowerCase());
                 const currentName = userNames[user.email.toLowerCase()] || "Unknown User";
-                
-                document.getElementById('lblUserEmail').innerText = (isCashier ? "💰 Cashier: " : "👤 ") + currentName;
+                document.getElementById('lblUserEmail').innerText = currentName;
                 document.getElementById('handler').value = currentName;
-                
                 startRealtimeListener();
             } else {
                 document.getElementById('loginScreen').classList.remove('hidden');
@@ -265,27 +286,26 @@
             const password = document.getElementById('loginPassword').value;
             try {
                 await signInWithEmailAndPassword(auth, email, password);
-            } catch (error) {
-                alert("Login Error: " + error.message);
-            }
+            } catch (error) { alert("Login Error: " + error.message); }
         });
 
-        document.getElementById('btnLogout').addEventListener('click', () => {
-            signOut(auth);
-        });
+        document.getElementById('btnLogout').addEventListener('click', () => signOut(auth));
 
         window.switchTab = function(type) {
             document.getElementById('formType').value = type;
+            const btnClient = document.getElementById('tabClient');
+            const btnExpense = document.getElementById('tabExpense');
+            
             if(type === 'client') {
                 document.getElementById('clientFields').classList.remove('hidden');
                 document.getElementById('expenseFields').classList.add('hidden');
-                document.getElementById('tabClient').className = "w-1/2 pb-2 font-bold text-center border-b-2 border-blue-500 text-blue-600";
-                document.getElementById('tabExpense').className = "w-1/2 pb-2 font-bold text-center text-gray-500 hover:text-blue-500";
+                btnClient.className = "w-1/2 py-2 text-xs font-black text-center rounded-lg bg-white text-blue-600 shadow-xs transition";
+                btnExpense.className = "w-1/2 py-2 text-xs font-bold text-center rounded-lg text-gray-500 transition";
             } else {
                 document.getElementById('clientFields').classList.add('hidden');
                 document.getElementById('expenseFields').classList.remove('hidden');
-                document.getElementById('tabExpense').className = "w-1/2 pb-2 font-bold text-center border-b-2 border-blue-500 text-blue-600";
-                document.getElementById('tabClient').className = "w-1/2 pb-2 font-bold text-center text-gray-500 hover:text-blue-500";
+                btnExpense.className = "w-1/2 py-2 text-xs font-black text-center rounded-lg bg-white text-blue-600 shadow-xs transition";
+                btnClient.className = "w-1/2 py-2 text-xs font-bold text-center rounded-lg text-gray-500 transition";
             }
         }
 
@@ -298,20 +318,15 @@
             e.preventDefault();
             const type = document.getElementById('formType').value;
             const editId = document.getElementById('editDocId').value;
-            
             let payload = { type: type, handler: document.getElementById('handler').value };
             
             if(type === 'client') {
                 const total = parseFloat(document.getElementById('totalFee').value) || 0;
                 const paid = parseFloat(document.getElementById('paidAmount').value) || 0;
                 const dues = parseFloat(document.getElementById('duesAmount').value) || 0;
+                let status = paid === 0 ? "Pending" : (dues > 0 ? "Dues" : "Complete");
                 
-                let status = "Pending";
-                if (paid === 0) status = "Pending";
-                else if (dues > 0) status = "Dues";
-                else if (total > 0 && dues === 0 && paid > 0) status = "Complete";
-                
-                payload.clientDate = document.getElementById('clientDate').value; // Saved Form Date
+                payload.clientDate = document.getElementById('clientDate').value;
                 payload.clientName = document.getElementById('clientName').value;
                 payload.cnic = document.getElementById('cnic').value;
                 payload.trackingId = document.getElementById('trackingId').value;
@@ -338,21 +353,19 @@
             try {
                 if(editId) {
                     await updateDoc(doc(db, "team_data", editId), payload);
-                    alert("Update ho gaya!");
+                    alert("Updated Successfully!");
                 } else {
                     payload.createdBy = auth.currentUser.email;
                     payload.timestamp = new Date();
                     await addDoc(dataCollection, payload);
-                    alert("Save ho gaya!");
+                    alert("Saved Successfully!");
                 }
                 cancelEditMode();
-            } catch (error) {
-                alert("Masla aaya: " + error.message);
-            }
+            } catch (error) { alert("Error: " + error.message); }
         });
 
         window.operatorHandover = async function(id) {
-            if(confirm("Kya apne cashier ko paise de diye hain?")) {
+            if(confirm("Kya apne cashier ko paise pakra diye hain?")) {
                 const now = new Date();
                 const formattedTime = now.toLocaleDateString('en-GB') + " " + now.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'});
                 await updateDoc(doc(db, "team_data", id), {
@@ -385,59 +398,44 @@
             closeEndorseModal();
         }
 
-        // Toggle Details Panel
         window.toggleDetailRow = function(id) {
             const el = document.getElementById("detail-" + id);
-            if(el.classList.contains("hidden")) {
-                el.classList.remove("hidden");
-            } else {
-                el.classList.add("hidden");
-            }
+            el.classList.toggle("hidden");
         }
 
         function startRealtimeListener() {
             unsubscribeSnapshot = onSnapshot(dataCollection, (snapshot) => {
                 cachedDocs = [];
-                snapshot.forEach(docSnap => {
-                    cachedDocs.push({ id: docSnap.id, data: docSnap.data() });
-                });
+                snapshot.forEach(docSnap => cachedDocs.push({ id: docSnap.id, data: docSnap.data() }));
                 renderTable();
             });
         }
 
         function renderTable() {
-            const dataTable = document.getElementById('dataTable');
+            const container = document.getElementById('dataTable');
             const searchVal = document.getElementById('tableSearchInput').value.toLowerCase().trim();
-            dataTable.innerHTML = "";
+            container.innerHTML = "";
             
-            let totalVerifiedProfit = 0;
-            let totalPendingCash = 0;
-            let totalOfficeExpenses = 0;
-            let grandTotalDues = 0;
+            let totalVerifiedProfit = 0, totalPendingCash = 0, totalOfficeExpenses = 0, grandTotalDues = 0;
             
             cachedDocs.forEach((item) => {
                 const data = item.data;
                 const id = item.id;
                 
-                // Formatted Dates for Searching
                 let rawDate = data.clientDate || data.expenseDate || "";
                 let displayDate = "";
                 if(rawDate) {
                     const parts = rawDate.split("-");
-                    if(parts.length === 3) displayDate = `${parts[2]}/${parts[1]}/${parts[0]}`; // DD/MM/YYYY
+                    if(parts.length === 3) displayDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
                 }
 
-                // 🔍 LIVE SEARCH ALGORITHM (NAME, CNIC, TRACKING, DATE)
                 if (searchVal) {
                     const cName = (data.clientName || "").toLowerCase();
                     const cnicNo = (data.cnic || "").toLowerCase();
                     const tId = (data.trackingId || "").toLowerCase();
                     const expDet = (data.expenseDetail || "").toLowerCase();
                     const dStr = displayDate.toLowerCase();
-                    
-                    if (!cName.includes(searchVal) && !cnicNo.includes(searchVal) && !tId.includes(searchVal) && !dStr.includes(searchVal) && !expDet.includes(searchVal)) {
-                        return;
-                    }
+                    if (!cName.includes(searchVal) && !cnicNo.includes(searchVal) && !tId.includes(searchVal) && !dStr.includes(searchVal) && !expDet.includes(searchVal)) return;
                 }
 
                 let singleProfit = 0;
@@ -454,94 +452,84 @@
                 if(currentFilter === 'expense' && data.type !== 'expense') return;
                 if(currentFilter === 'pending_cash' && (data.type === 'expense' || data.cashVerified === true)) return;
 
-                // 💸 KHARCHA ROW DISPLAY
+                const card = document.createElement('div');
+                
                 if(data.type === 'expense') {
-                    const tr = document.createElement('tr');
-                    tr.className = "border-b bg-red-50 hover:bg-red-100";
-                    tr.innerHTML = `
-                        <td class="p-3 border font-semibold text-red-800">
-                            📅 [${displayDate}] 💸 KHARCHA: ${data.expenseDetail} (Rs. ${data.expenseAmount}) | Handler: ${data.handler}
-                        </td>
-                        <td class="p-3 border text-center space-x-1">
-                            <button onclick="editRecord('${id}')" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600">Edit</button>
-                            <button onclick="deleteRecord('${id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Delete</button>
-                        </td>
+                    card.className = "bg-red-50 border border-red-200 rounded-xl p-3 text-xs flex justify-between items-center";
+                    card.innerHTML = `
+                        <div>
+                            <p class="font-black text-red-800">💸 KHARCHA: ${data.expenseDetail}</p>
+                            <p class="text-[10px] text-gray-500 mt-0.5">📅 ${displayDate} | By: ${data.handler}</p>
+                            <p class="text-sm font-black text-red-600 mt-1">Rs. ${data.expenseAmount}</p>
+                        </div>
+                        <div class="space-y-1 flex flex-col">
+                            <button onclick="editRecord('${id}')" class="bg-blue-500 text-white px-2 py-1 rounded-lg font-bold text-[10px]">Edit</button>
+                            <button onclick="deleteRecord('${id}')" class="bg-red-500 text-white px-2 py-1 rounded-lg font-bold text-[10px]">Del</button>
+                        </div>
                     `;
-                    dataTable.appendChild(tr);
+                    container.appendChild(card);
                     return;
                 }
 
-                // 🛠️ Lock Logic Status Panel
                 let lockStatusHTML = "";
                 if(data.cashStatus === "Verified" || data.cashVerified === true) {
-                    lockStatusHTML = `<span class="text-green-700 font-bold">✅ Approved (Paid By: ${data.paidBy}) [${data.verifiedAtTime}]</span>`;
+                    lockStatusHTML = `<span class="text-green-700 font-bold block text-[11px]">✅ Cash Verified (By: ${data.paidBy})</span>`;
                 } else if(data.cashStatus === "Handed Over") {
                     if(isCashier) {
                         lockStatusHTML = `
-                            <div class="inline-block bg-amber-100 p-1.5 rounded border border-amber-300">
-                                <span class="text-amber-800 text-xs block font-bold mb-1">⏳ Sent: ${data.operatorHandoverTime}</span>
-                                <button onclick="openEndorseModal('${id}')" class="bg-amber-500 text-white px-2 py-0.5 rounded text-xs font-bold hover:bg-amber-600">Approve Cash</button>
+                            <div class="mt-2 bg-amber-50 p-2 rounded-lg border border-amber-200">
+                                <p class="text-amber-800 font-bold text-[10px] mb-1">⏳ Received Request (${data.operatorHandoverTime})</p>
+                                <button onclick="openEndorseModal('${id}')" class="w-full bg-amber-500 text-white py-1 rounded-md text-[10px] font-black">Approve Cash</button>
                             </div>
                         `;
                     } else {
-                        lockStatusHTML = `<span class="text-amber-600 font-bold italic animate-pulse">⏳ Awaiting Cashier Approval... (Sent: ${data.operatorHandoverTime})</span>`;
+                        lockStatusHTML = `<span class="text-amber-600 font-bold block text-[10px] mt-1 animate-pulse">⏳ Waiting Cashier Lock...</span>`;
                     }
                 } else {
-                    if(isCashier) {
-                        lockStatusHTML = `<span class="text-gray-400 italic">Operator hasn't sent cash yet</span>`;
+                    if(!isCashier) {
+                        lockStatusHTML = `<button onclick="operatorHandover('${id}')" class="mt-2 w-full bg-blue-500 text-white py-1 rounded-lg text-[10px] font-black">💸 Hand over Cash</button>`;
                     } else {
-                        lockStatusHTML = `<button onclick="operatorHandover('${id}')" class="bg-blue-500 text-white px-2 py-0.5 rounded text-xs font-bold hover:bg-blue-600">💸 Hand over Cash</button>`;
+                        lockStatusHTML = `<span class="text-gray-400 italic block text-[10px] mt-1">Cash not sent yet</span>`;
                     }
                 }
 
-                // Main Client Row Element
-                const trMain = document.createElement('tr');
-                trMain.className = "border-b hover:bg-blue-50 cursor-pointer transition";
-                trMain.innerHTML = `
-                    <td class="p-3 border" onclick="toggleDetailRow('${id}')">
-                        <div class="flex justify-between items-center">
+                card.className = "bg-white border border-gray-100 rounded-xl shadow-xs overflow-hidden";
+                card.innerHTML = `
+                    <div class="p-3 bg-white" onclick="toggleDetailRow('${id}')">
+                        <div class="flex justify-between items-start">
                             <div>
-                                <span class="font-bold text-blue-700 text-base">👤 ${data.clientName || 'N/A'}</span>
-                                <span class="text-xs bg-gray-200 text-gray-800 px-2 py-0.5 rounded ml-2 font-semibold">📅 ${displayDate}</span>
+                                <h3 class="font-black text-blue-600 text-sm">👤 ${data.clientName}</h3>
+                                <p class="text-[10px] text-gray-400 font-semibold mt-0.5">🆔 CNIC: ${data.cnic || 'N/A'}</p>
+                                <p class="text-[10px] text-gray-400 font-semibold">🔍 Track ID: ${data.trackingId || 'N/A'}</p>
                             </div>
-                            <span class="text-xs text-gray-400">Click to open details 👇</span>
+                            <span class="text-[10px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md font-bold">📅 ${displayDate}</span>
                         </div>
-                        <div class="text-xs text-gray-600 mt-1">
-                            <span class="font-semibold">Tracking ID:</span> ${data.trackingId || 'N/A'} | <span class="font-semibold">CNIC:</span> ${data.cnic || 'N/A'}
+                    </div>
+                    
+                    <!-- Expanded Mobile Drawer Panel -->
+                    <div id="detail-${id}" class="hidden bg-gray-50 border-t p-3 space-y-2 text-[11px] border-dashed">
+                        <div class="grid grid-cols-2 gap-2 text-gray-600">
+                            <div>
+                                <p><strong>📂 Job Type:</strong> ${data.applicationType || 'N/A'}</p>
+                                <p><strong>📞 Phone:</strong> ${data.mobileNumber || 'N/A'}</p>
+                                <p><strong>🔑 Password:</strong> <span class="text-purple-700 font-bold">${data.recordPassword || 'None'}</span></p>
+                                <p><strong>👤 Operator:</strong> ${data.handler}</p>
+                            </div>
+                            <div class="bg-white p-2 rounded-lg border text-[10px] space-y-0.5 font-semibold">
+                                <p>Total Fee: Rs. ${data.totalFee}</p>
+                                <p class="text-blue-600">Paid Out: Rs. ${data.paidAmount}</p>
+                                <p class="text-red-500">Dues Out: Rs. ${data.duesAmount}</p>
+                                <p class="text-green-600 font-bold border-t pt-0.5">Profit: Rs. ${singleProfit}</p>
+                            </div>
                         </div>
-                    </td>
-                    <td class="p-3 border text-center space-x-1 vertical-align-middle">
-                        <button onclick="editRecord('${id}')" class="bg-blue-500 text-white px-2 py-1 rounded text-xs hover:bg-blue-600">Edit</button>
-                        <button onclick="deleteRecord('${id}')" class="bg-red-500 text-white px-2 py-1 rounded text-xs hover:bg-red-600">Delete</button>
-                    </td>
+                        <div class="pt-1">${lockStatusHTML}</div>
+                        <div class="flex space-x-2 justify-end pt-2 border-t text-[10px]">
+                            <button onclick="editRecord('${id}')" class="bg-blue-600 text-white px-3 py-1 rounded-md font-bold">Edit</button>
+                            <button onclick="deleteRecord('${id}')" class="bg-red-500 text-white px-3 py-1 rounded-md font-bold">Delete</button>
+                        </div>
+                    </div>
                 `;
-
-                // Hidden Detail Row Element
-                const trDetail = document.createElement('tr');
-                trDetail.id = "detail-" + id;
-                trDetail.className = "hidden bg-gray-50 border-b";
-                trDetail.innerHTML = `
-                    <td colspan="2" class="p-4 border">
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
-                            <div class="space-y-1">
-                                <p><strong>📂 Job/Maqsad:</strong> ${data.applicationType || 'N/A'}</p>
-                                <p><strong>📞 Mobile Number:</strong> ${data.mobileNumber || 'N/A'}</p>
-                                <p><strong>🔑 Key/Password:</strong> <span class="text-purple-700 font-bold">${data.recordPassword || 'None'}</span></p>
-                                <p><strong>👤 Handler (Entry By):</strong> ${data.handler}</p>
-                            </div>
-                            <div class="space-y-1 bg-white p-3 rounded shadow-sm border">
-                                <p class="text-gray-600">Total Fee: <span class="font-bold">Rs. ${data.totalFee}</span></p>
-                                <p class="text-blue-600">Paid Out: <span class="font-bold">Rs. ${data.paidAmount}</span></p>
-                                <p class="text-red-600">Gahak Dues: <span class="font-bold">Rs. ${data.duesAmount}</span></p>
-                                <p class="text-green-700 border-t pt-1 font-bold">Net Profit: Rs. ${singleProfit}</p>
-                                <div class="mt-2 pt-2 border-t">${lockStatusHTML}</div>
-                            </div>
-                        </div>
-                    </td>
-                `;
-
-                dataTable.appendChild(trMain);
-                dataTable.appendChild(trDetail);
+                container.appendChild(card);
             });
             
             let netVerifiedProfit = totalVerifiedProfit - totalOfficeExpenses;
@@ -555,7 +543,6 @@
             const match = cachedDocs.find(item => item.id === id);
             if(!match) return;
             const data = match.data;
-
             document.getElementById('editDocId').value = id;
             document.getElementById('handler').value = data.handler || '';
             switchTab(data.type);
@@ -576,9 +563,8 @@
                 document.getElementById('expenseDetail').value = data.expenseDetail || '';
                 document.getElementById('expenseAmount').value = data.expenseAmount || 0;
             }
-
+            window.scrollTo({top: 0, behavior: 'smooth'});
             document.getElementById('btnSubmit').innerText = "Update Karein";
-            document.getElementById('btnSubmit').className = "w-full bg-blue-600 text-white p-2 rounded font-bold hover:bg-blue-700 transition";
             document.getElementById('btnCancelEdit').classList.remove('hidden');
         }
 
@@ -586,7 +572,6 @@
             document.getElementById('khataForm').reset();
             document.getElementById('editDocId').value = "";
             document.getElementById('btnSubmit').innerText = "Data Save Karein";
-            document.getElementById('btnSubmit').className = "w-full bg-green-600 text-white p-2 rounded font-bold hover:bg-green-700 transition";
             document.getElementById('btnCancelEdit').classList.add('hidden');
             document.getElementById('clientDate').value = todayStr;
             document.getElementById('expenseDate').value = todayStr;
@@ -594,9 +579,7 @@
         }
 
         window.deleteRecord = async (id) => {
-            if(confirm("Kya aap waqai yeh record mita dena chahte hain?")) {
-                await deleteDoc(doc(db, "team_data", id));
-            }
+            if(confirm("Mita dein ye record?")) { await deleteDoc(doc(db, "team_data", id)); }
         }
     </script>
 </body>
