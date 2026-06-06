@@ -5,16 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Team Khata App</title>
     
-    <!-- PWA Mobile App Meta Tags -->
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#2563eb">
     
-    <!-- App Icons -->
-    <link class="rounded-2xl" rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2691/2691522.png">
+    <link rel="icon" type="image/png" href="https://cdn-icons-png.flaticon.com/512/2691/2691522.png">
     <link rel="apple-touch-icon" href="https://cdn-icons-png.flaticon.com/512/2691/2691522.png">
 
-    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <style>
@@ -24,7 +21,6 @@
 </head>
 <body class="bg-gray-50 font-sans min-h-screen text-gray-800">
 
-    <!-- LOGIN SCREEN CONTAINER -->
     <div id="loginScreen" class="flex items-center justify-center min-h-screen bg-gray-100 p-4">
         <div class="bg-white p-6 rounded-2xl shadow-xl w-full max-w-sm border border-gray-100">
             <div class="text-center mb-6">
@@ -48,9 +44,7 @@
         </div>
     </div>
 
-    <!-- MAIN KHATA INTERFACE -->
     <div id="mainInterface" class="hidden pb-12">
-        <!-- Header -->
         <header class="bg-blue-600 text-white p-4 shadow-md sticky top-0 z-40 flex justify-between items-center">
             <span class="text-base font-black tracking-wide">🚀 TEAM KHATA APP</span>
             <div class="flex items-center space-x-2">
@@ -59,7 +53,6 @@
             </div>
         </header>
 
-        <!-- CASH ENDORSEMENT MODAL -->
         <div id="endorseModal" class="fixed inset-0 bg-black/60 hidden flex items-center justify-center z-50 p-4 backdrop-blur-xs">
             <div class="bg-white p-5 rounded-2xl shadow-xl w-full max-w-sm">
                 <h3 class="text-base font-black text-gray-800 mb-2">💰 Cash Endorsement</h3>
@@ -81,151 +74,145 @@
             </div>
         </div>
 
-        <!-- MAIN CONTAINER -->
-        <div class="max-w-md mx-auto p-3 space-y-4">
+        <div class="max-w-7xl mx-auto p-3 lg:p-6 grid grid-cols-1 lg:grid-cols-3 gap-6">
             
-            <!-- SUMMARY WIDGETS -->
-            <div class="flex space-x-2 overflow-x-auto pb-1 custom-scroll snap-x">
-                <div class="bg-white border border-gray-100 p-3 rounded-xl shadow-xs min-w-[125px] flex-1 snap-start cursor-pointer" onclick="filterTable('all')">
-                    <p class="text-[10px] uppercase font-bold text-gray-400">Verified Profit</p>
-                    <p id="totalProfitDisplay" class="text-sm font-black text-green-600 mt-0.5">Rs. 0</p>
-                </div>
-                <div class="bg-white border border-gray-100 p-3 rounded-xl shadow-xs min-w-[125px] flex-1 snap-start cursor-pointer" onclick="filterTable('pending_cash')">
-                    <p class="text-[10px] uppercase font-bold text-gray-400">Kacha Cash</p>
-                    <p id="totalPendingCashDisplay" class="text-sm font-black text-amber-500 mt-0.5">Rs. 0</p>
-                </div>
-                <div class="bg-white border border-gray-100 p-3 rounded-xl shadow-xs min-w-[125px] flex-1 snap-start cursor-pointer" onclick="filterTable('dues')">
-                    <p class="text-[10px] uppercase font-bold text-gray-400">Total Dues</p>
-                    <p id="totalBalanceDisplay" class="text-sm font-black text-red-500 mt-0.5">Rs. 0</p>
-                </div>
-                <div class="bg-white border border-gray-100 p-3 rounded-xl shadow-xs min-w-[125px] flex-1 snap-start cursor-pointer" onclick="filterTable('expense')">
-                    <p class="text-[10px] uppercase font-bold text-gray-400">Expenses</p>
-                    <p id="totalExpenseDisplay" class="text-sm font-black text-gray-700 mt-0.5">Rs. 0</p>
-                </div>
-            </div>
-
-            <!-- FORM CARD -->
-            <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4">
-                <div class="flex mb-4 bg-gray-50 p-1 rounded-xl border">
-                    <button id="tabClient" onclick="switchTab('client')" class="w-1/2 py-2 text-xs font-black text-center rounded-lg bg-white text-blue-600 shadow-xs transition">👤 Client Form</button>
-                    <button id="tabExpense" onclick="switchTab('expense')" class="w-1/2 py-2 text-xs font-bold text-center rounded-lg text-gray-500 transition">💸 Kharcha</button>
+            <div class="lg:col-span-1 space-y-4">
+                <div class="grid grid-cols-2 gap-2">
+                    <div class="bg-white border border-gray-100 p-3 rounded-xl shadow-xs cursor-pointer" onclick="filterTable('all')">
+                        <p class="text-[10px] uppercase font-bold text-gray-400">Verified Profit</p>
+                        <p id="totalProfitDisplay" class="text-sm lg:text-base font-black text-green-600 mt-0.5">Rs. 0</p>
+                    </div>
+                    <div class="bg-white border border-gray-100 p-3 rounded-xl shadow-xs cursor-pointer" onclick="filterTable('pending_cash')">
+                        <p class="text-[10px] uppercase font-bold text-gray-400">Kacha Cash</p>
+                        <p id="totalPendingCashDisplay" class="text-sm lg:text-base font-black text-amber-500 mt-0.5">Rs. 0</p>
+                    </div>
+                    <div class="bg-white border border-gray-100 p-3 rounded-xl shadow-xs cursor-pointer" onclick="filterTable('dues')">
+                        <p class="text-[10px] uppercase font-bold text-gray-400">Total Dues</p>
+                        <p id="totalBalanceDisplay" class="text-sm lg:text-base font-black text-red-500 mt-0.5">Rs. 0</p>
+                    </div>
+                    <div class="bg-white border border-gray-100 p-3 rounded-xl shadow-xs cursor-pointer" onclick="filterTable('expense')">
+                        <p class="text-[10px] uppercase font-bold text-gray-400">Expenses</p>
+                        <p id="totalExpenseDisplay" class="text-sm lg:text-base font-black text-gray-700 mt-0.5">Rs. 0</p>
+                    </div>
                 </div>
 
-                <form id="khataForm" class="space-y-3 text-xs">
-                    <input type="hidden" id="formType" value="client">
-                    <input type="hidden" id="editDocId" value="">
+                <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-4 sticky lg:top-20">
+                    <div class="flex mb-4 bg-gray-50 p-1 rounded-xl border">
+                        <button id="tabClient" onclick="switchTab('client')" class="w-1/2 py-2 text-xs font-black text-center rounded-lg bg-white text-blue-600 shadow-xs transition">👤 Client Form</button>
+                        <button id="tabExpense" onclick="switchTab('expense')" class="w-1/2 py-2 text-xs font-bold text-center rounded-lg text-gray-500 transition">💸 Kharcha</button>
+                    </div>
 
-                    <!-- Client Fields -->
-                    <div id="clientFields" class="space-y-3">
-                        <div class="grid grid-cols-2 gap-2">
+                    <form id="khataForm" class="space-y-3 text-xs">
+                        <input type="hidden" id="formType" value="client">
+                        <input type="hidden" id="editDocId" value="">
+
+                        <div id="clientFields" class="space-y-3">
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="font-bold text-gray-500">Tareekh / Date</label>
+                                    <input type="date" id="clientDate" required class="w-full p-2.5 border border-gray-200 bg-gray-50 rounded-xl mt-1 font-bold focus:outline-none">
+                                </div>
+                                <div>
+                                    <label class="font-bold text-gray-500">Gahak ka Naam</label>
+                                    <input type="text" id="clientName" required class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none">
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="font-bold text-gray-500">ID Card (CNIC)</label>
+                                    <input type="text" id="cnic" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none" placeholder="Optional">
+                                </div>
+                                <div>
+                                    <label class="font-bold text-gray-500">Tracking ID</label>
+                                    <input type="text" id="trackingId" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none" placeholder="Optional">
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-2 gap-2">
+                                <div>
+                                    <label class="font-bold text-gray-500">Mobile Number</label>
+                                    <input type="text" id="mobileNumber" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none" placeholder="03001234567">
+                                </div>
+                                <div>
+                                    <label class="font-bold text-purple-700">Password / Key</label>
+                                    <input type="text" id="recordPassword" class="w-full p-2.5 border border-purple-200 rounded-xl mt-1 focus:outline-none" placeholder="Optional Password">
+                                </div>
+                            </div>
+
                             <div>
-                                <label class="font-bold text-gray-500">Tareekh / Date</label>
-                                <input type="date" id="clientDate" required class="w-full p-2.5 border border-gray-200 bg-gray-50 rounded-xl mt-1 font-bold focus:outline-none">
+                                <label class="font-bold text-purple-700">Application / Maqsad</label>
+                                <input type="text" id="applicationType" class="w-full p-2.5 border border-purple-200 rounded-xl mt-1 focus:outline-none font-semibold" placeholder="e.g. Passport, Online Form">
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-1.5 bg-gray-50 p-2.5 rounded-xl border border-dashed">
+                                <div>
+                                    <label class="font-bold text-blue-600 block text-[10px]">Total Fee</label>
+                                    <input type="number" id="totalFee" class="w-full p-1.5 border rounded-lg mt-0.5 text-center font-bold text-sm" value="0">
+                                </div>
+                                <div>
+                                    <label class="font-bold text-green-600 block text-[10px]">Paid Amt</label>
+                                    <input type="number" id="paidAmount" class="w-full p-1.5 border rounded-lg mt-0.5 text-center font-bold text-sm" value="0">
+                                </div>
+                                <div>
+                                    <label class="font-bold text-red-500 block text-[10px]">Gahak Dues</label>
+                                    <input type="number" id="duesAmount" class="w-full p-1.5 border rounded-lg mt-0.5 text-center font-bold text-sm text-red-600" value="0">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div id="expenseFields" class="space-y-3 hidden">
+                            <div>
+                                <label class="font-bold text-gray-500">Kharche ki Tareekh</label>
+                                <input type="date" id="expenseDate" class="w-full p-2.5 border border-gray-200 bg-gray-50 rounded-xl mt-1 font-bold">
                             </div>
                             <div>
-                                <label class="font-bold text-gray-500">Gahak ka Naam</label>
-                                <input type="text" id="clientName" required class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none">
+                                <label class="font-bold text-gray-500">Kharche ki Tafseel</label>
+                                <input type="text" id="expenseDetail" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1" placeholder="Chai, Bill...">
                             </div>
+                            <div>
+                                <label class="font-bold text-gray-500">Kharche ki Raqam (Rs.)</label>
+                                <input type="number" id="expenseAmount" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1" value="0">
+                            </div>
+                        </div>
+
+                        <div class="flex items-center justify-between bg-gray-100 px-3 py-2 rounded-xl text-[11px]">
+                            <span class="font-bold text-gray-500">Operator:</span>
+                            <input type="text" id="handler" required class="bg-transparent text-right font-black text-gray-700 outline-none cursor-not-allowed" readonly>
                         </div>
                         
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="font-bold text-gray-500">ID Card (CNIC)</label>
-                                <input type="text" id="cnic" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none" placeholder="Optional">
-                            </div>
-                            <div>
-                                <label class="font-bold text-gray-500">Tracking ID</label>
-                                <input type="text" id="trackingId" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none" placeholder="Optional">
-                            </div>
+                        <div class="flex space-x-2 pt-1">
+                            <button type="submit" id="btnSubmit" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-black shadow-xs active:scale-95 transition text-xs">
+                                Data Save Karein
+                            </button>
+                            <button type="button" id="btnCancelEdit" onclick="cancelEditMode()" class="bg-gray-400 text-white p-3 rounded-xl font-bold active:scale-95 transition hidden">
+                                Cancel
+                            </button>
                         </div>
+                    </form>
+                </div>
+            </div>
 
-                        <div class="grid grid-cols-2 gap-2">
-                            <div>
-                                <label class="font-bold text-gray-500">Mobile Number</label>
-                                <input type="text" id="mobileNumber" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1 focus:outline-none" placeholder="03001234567">
-                            </div>
-                            <div>
-                                <label class="font-bold text-purple-700">Password / Key</label>
-                                <input type="text" id="recordPassword" class="w-full p-2.5 border border-purple-200 rounded-xl mt-1 focus:outline-none" placeholder="Optional Password">
-                            </div>
-                        </div>
+            <div class="lg:col-span-2 space-y-4">
+                <div class="bg-white p-3 rounded-2xl shadow-xs border border-blue-200 flex items-center space-x-2 text-xs">
+                    <span class="text-blue-600 font-bold">🔍 Search:</span>
+                    <input type="text" id="tableSearchInput" placeholder="Naam, CNIC, Tracking ID ya Date (DD/MM/YYYY) likhein..." class="w-full p-2 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-400">
+                </div>
 
-                        <div>
-                            <label class="font-bold text-purple-700">Application / Maqsad</label>
-                            <input type="text" id="applicationType" class="w-full p-2.5 border border-purple-200 rounded-xl mt-1 focus:outline-none font-semibold" placeholder="e.g. Passport, Online Form">
-                        </div>
-
-                        <div class="grid grid-cols-3 gap-1.5 bg-gray-50 p-2.5 rounded-xl border border-dashed">
-                            <div>
-                                <label class="font-bold text-blue-600 block text-[10px]">Total Fee</label>
-                                <input type="number" id="totalFee" class="w-full p-1.5 border rounded-lg mt-0.5 text-center font-bold text-sm" value="0">
-                            </div>
-                            <div>
-                                <label class="font-bold text-green-600 block text-[10px]">Paid Amt</label>
-                                <input type="number" id="paidAmount" class="w-full p-1.5 border rounded-lg mt-0.5 text-center font-bold text-sm" value="0">
-                            </div>
-                            <div>
-                                <label class="font-bold text-red-500 block text-[10px]">Gahak Dues</label>
-                                <input type="number" id="duesAmount" class="w-full p-1.5 border rounded-lg mt-0.5 text-center font-bold text-sm text-red-600" value="0">
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Expense Fields -->
-                    <div id="expenseFields" class="space-y-3 hidden">
-                        <div>
-                            <label class="font-bold text-gray-500">Kharche ki Tareekh</label>
-                            <input type="date" id="expenseDate" class="w-full p-2.5 border border-gray-200 bg-gray-50 rounded-xl mt-1 font-bold">
-                        </div>
-                        <div>
-                            <label class="font-bold text-gray-500">Kharche ki Tafseel</label>
-                            <input type="text" id="expenseDetail" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1" placeholder="Chai, Bill...">
-                        </div>
-                        <div>
-                            <label class="font-bold text-gray-500">Kharche ki Raqam (Rs.)</label>
-                            <input type="number" id="expenseAmount" class="w-full p-2.5 border border-gray-200 rounded-xl mt-1" value="0">
-                        </div>
-                    </div>
-
-                    <!-- Common Field Locked -->
-                    <div class="flex items-center justify-between bg-gray-100 px-3 py-2 rounded-xl text-[11px]">
-                        <span class="font-bold text-gray-500">Operator:</span>
-                        <input type="text" id="handler" required class="bg-transparent text-right font-black text-gray-700 outline-none cursor-not-allowed" readonly>
+                <div class="space-y-2">
+                    <div class="flex justify-between items-center px-1">
+                        <h2 class="text-xs font-black text-gray-500 uppercase tracking-wider">Khata Records List</h2>
+                        <span class="text-[10px] bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded-full">Live Connection</span>
                     </div>
                     
-                    <div class="flex space-x-2 pt-1">
-                        <button type="submit" id="btnSubmit" class="flex-1 bg-green-600 text-white p-3 rounded-xl font-black shadow-xs active:scale-95 transition text-xs">
-                            Data Save Karein
-                        </button>
-                        <button type="button" id="btnCancelEdit" onclick="cancelEditMode()" class="bg-gray-400 text-white p-3 rounded-xl font-bold active:scale-95 transition hidden">
-                            Cancel
-                        </button>
-                    </div>
-                </form>
-            </div>
-
-            <!-- 🔍 FIXED & IMPROVED SEARCH BAR -->
-            <div class="bg-white p-3 rounded-2xl shadow-xs border border-blue-200 flex items-center space-x-2 text-xs">
-                <span class="text-blue-600 font-bold">🔍 Search:</span>
-                <input type="text" id="tableSearchInput" placeholder="Naam, CNIC, ID ya Date likhein..." class="w-full p-2 border border-gray-200 rounded-xl focus:outline-none focus:border-blue-400">
-            </div>
-
-            <!-- RECORD LIST -->
-            <div class="space-y-2">
-                <div class="flex justify-between items-center px-1">
-                    <h2 class="text-xs font-black text-gray-500 uppercase tracking-wider">Khata Records List</h2>
-                    <span class="text-[10px] bg-blue-100 text-blue-700 font-bold px-2 py-0.5 rounded-full">Live Connection</span>
-                </div>
-                
-                <div id="dataTable" class="space-y-2">
-                    <!-- Cards will render here -->
+                    <div id="dataTable" class="space-y-2">
+                        </div>
                 </div>
             </div>
 
         </div>
     </div>
 
-    <!-- Firebase SDK Imports -->
     <script type="module">
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
         import { getFirestore, collection, addDoc, onSnapshot, doc, deleteDoc, updateDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
@@ -263,7 +250,6 @@
         document.getElementById('clientDate').value = todayStr;
         document.getElementById('expenseDate').value = todayStr;
 
-        // Search Input Event Listener to render instantly as user types
         document.getElementById('tableSearchInput').addEventListener('input', () => {
             renderTable();
         });
@@ -415,7 +401,6 @@
             });
         }
 
-        // FULLY FIXED SEARCH LOGIC (LOWERCASE INSENSITIVE)
         function renderTable() {
             const container = document.getElementById('dataTable');
             const searchVal = document.getElementById('tableSearchInput').value.toLowerCase().trim();
@@ -434,7 +419,6 @@
                     if(parts.length === 3) displayDate = `${parts[2]}/${parts[1]}/${parts[0]}`;
                 }
 
-                // Super Search Match Fix
                 if (searchVal) {
                     const cName = (data.clientName || "").toLowerCase();
                     const cnicNo = (data.cnic || "").toLowerCase();
@@ -453,7 +437,7 @@
                         !appType.includes(searchVal) &&
                         !mobNo.includes(searchVal) &&
                         !handlerName.includes(searchVal)) {
-                        return; // Agar match na kare toh is record ko skip kardo
+                        return;
                     }
                 }
 
@@ -474,7 +458,7 @@
                 const card = document.createElement('div');
                 
                 if(data.type === 'expense') {
-                    card.className = "bg-red-50 border border-red-200 rounded-xl p-3 text-xs flex justify-between items-center";
+                    card.className = "bg-red-50 border border-red-200 rounded-xl p-3 text-xs flex justify-between items-center w-full";
                     card.innerHTML = `
                         <div>
                             <p class="font-black text-red-800">💸 KHARCHA: ${data.expenseDetail}</p>
@@ -512,32 +496,38 @@
                     }
                 }
 
-                card.className = "bg-white border border-gray-100 rounded-xl shadow-xs overflow-hidden";
+                card.className = "bg-white border border-gray-100 rounded-xl shadow-xs overflow-hidden w-full";
                 card.innerHTML = `
-                    <div class="p-3 bg-white" onclick="toggleDetailRow('${id}')">
+                    <div class="p-3 bg-white hover:bg-blue-50/40 cursor-pointer transition" onclick="toggleDetailRow('${id}')">
                         <div class="flex justify-between items-start">
                             <div>
                                 <h3 class="font-black text-blue-600 text-sm">👤 ${data.clientName}</h3>
-                                <p class="text-[10px] text-gray-400 font-semibold mt-0.5">🆔 CNIC: ${data.cnic || 'N/A'}</p>
-                                <p class="text-[10px] text-gray-400 font-semibold">🔍 Track ID: ${data.trackingId || 'N/A'}</p>
+                                <div class="text-[10px] text-gray-500 font-semibold mt-1 space-x-2">
+                                    <span>🆔 CNIC: ${data.cnic || 'N/A'}</span>
+                                    <span>|</span>
+                                    <span>🔍 Track ID: ${data.trackingId || 'N/A'}</span>
+                                </div>
                             </div>
-                            <span class="text-[10px] bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md font-bold">📅 ${displayDate}</span>
+                            <div class="text-right">
+                                <span class="text-[10px] bg-blue-50 text-blue-700 px-2 py-1 rounded-md font-bold">📅 ${displayDate}</span>
+                                <span class="block text-[9px] text-gray-400 mt-1">Click details 👇</span>
+                            </div>
                         </div>
                     </div>
                     
-                    <div id="detail-${id}" class="hidden bg-gray-50 border-t p-3 space-y-2 text-[11px] border-dashed">
-                        <div class="grid grid-cols-2 gap-2 text-gray-600">
-                            <div>
+                    <div id="detail-${id}" class="hidden bg-gray-50 border-t p-4 space-y-2 text-[11px] border-dashed">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-600">
+                            <div class="space-y-1">
                                 <p><strong>📂 Job Type:</strong> ${data.applicationType || 'N/A'}</p>
                                 <p><strong>📞 Phone:</strong> ${data.mobileNumber || 'N/A'}</p>
                                 <p><strong>🔑 Password:</strong> <span class="text-purple-700 font-bold">${data.recordPassword || 'None'}</span></p>
                                 <p><strong>👤 Operator:</strong> ${data.handler}</p>
                             </div>
-                            <div class="bg-white p-2 rounded-lg border text-[10px] space-y-0.5 font-semibold">
-                                <p>Total Fee: Rs. ${data.totalFee}</p>
-                                <p class="text-blue-600">Paid Out: Rs. ${data.paidAmount}</p>
-                                <p class="text-red-500">Dues Out: Rs. ${data.duesAmount}</p>
-                                <p class="text-green-600 font-bold border-t pt-0.5">Profit: Rs. ${singleProfit}</p>
+                            <div class="bg-white p-3 rounded-xl border text-[11px] space-y-1 font-semibold max-w-xs">
+                                <p class="flex justify-between"><span>Total Fee:</span> <span>Rs. ${data.totalFee}</span></p>
+                                <p class="text-blue-600 flex justify-between"><span>Paid Out:</span> <span>Rs. ${data.paidAmount}</span></p>
+                                <p class="text-red-500 flex justify-between"><span>Dues Out:</span> <span>Rs. ${data.duesAmount}</span></p>
+                                <p class="text-green-600 font-bold border-t pt-1 flex justify-between"><span>Net Profit:</span> <span>Rs. ${singleProfit}</span></p>
                             </div>
                         </div>
                         <div class="pt-1">${lockStatusHTML}</div>
